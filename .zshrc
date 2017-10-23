@@ -96,11 +96,8 @@ export HISTFILESIZE=10000
 export CLICOLOR=YES
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-export EDITOR='sublime -w'
+export EDITOR='vim'
 export PATH="/usr/local/sbin:$PATH"
-
-# vv tab-completition
-source $( echo $(which vv)-completions)
 
 # Aliases
 alias zshconfig="subl ~/.zshrc"
