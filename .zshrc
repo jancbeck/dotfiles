@@ -99,9 +99,6 @@ export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 export EDITOR='sublime -w'
 export PATH="/usr/local/sbin:$PATH"
 
-# vv tab-completition
-source $( echo $(which vv)-completions)
-
 # Aliases
 alias zshconfig="subl ~/.zshrc"
 alias unlockCCC="diskutil cs unlockVolume BAA4865D-3C13-4FE5-A5FB-3AAD2028CDFF"
