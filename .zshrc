@@ -99,11 +99,9 @@ export HISTFILESIZE=10000
 export CLICOLOR=YES
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-export EDITOR='vim'
 export PATH="/usr/local/sbin:$PATH"
 
 # Aliases
 alias zshconfig="subl ~/.zshrc"
-alias unlockCCC="diskutil cs unlockVolume BAA4865D-3C13-4FE5-A5FB-3AAD2028CDFF"
-alias unlockBB="diskutil cs unlockVolume F90FE107-D7C0-4615-A312-F84617C1204D"
+alias sublime="diskutil cs unlockVolume BAA4865D-3C13-4FE5-A5FB-3AAD2028CDFF"
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
