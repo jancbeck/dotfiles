@@ -103,5 +103,12 @@ export PATH="/usr/local/sbin:$PATH"
 
 # Aliases
 alias zshconfig="subl ~/.zshrc"
-alias sublime="diskutil cs unlockVolume BAA4865D-3C13-4FE5-A5FB-3AAD2028CDFF"
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/jan/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/jan/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/jan/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jan/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+# Homebrew
+export PATH=/opt/homebrew/bin:$PATH
