@@ -1,8 +1,0 @@
-[core]
-account = janc.beck@gmail.com
-project = prosr-294621
-
-[compute]
-zone = europe-west1-b
-region = europe-west1
-
