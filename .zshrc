@@ -45,7 +45,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git colored-man-pages colorize github vagrant virtualenv pip python brew osx zsh-syntax-highlighting)
+plugins=(git colored-man-pages colorize github virtualenv brew macos zsh-syntax-highlighting nvm zsh-better-npm-completion)
 
 # User configuration
 PROMPT_TITLE='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/~}\007"'
@@ -75,7 +75,7 @@ export LC_ALL=en_US.UTF-8
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='rsub'
 else
-  export EDITOR='sublime'
+  export EDITOR='code'
 fi
 
 # Compilation flags
@@ -99,16 +99,15 @@ export HISTFILESIZE=10000
 export CLICOLOR=YES
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-export PATH="/usr/local/sbin:$PATH"
+PATH=/opt/homebrew/sbin:/opt/homebrew/bin:$PATH
 
 # Aliases
 alias zshconfig="subl ~/.zshrc"
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/jan/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/jan/Downloads/google-cloud-sdk/path.zsh.inc'; fi
 
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/jan/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jan/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Homebrew
-export PATH=/opt/homebrew/bin:$PATH
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
