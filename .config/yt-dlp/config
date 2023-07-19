@@ -1,0 +1,23 @@
+# Lines starting with # are comments
+
+# Do not copy the mtime
+--no-mtime
+
+# WORKAROUND FOR CERTIFICATE_VERIFY_FAILED ERROR
+--no-check-certificate
+
+# output
+# Save all videos under Downloads directory in your home directory
+-P "~/Downloads"
+#-o "%(playlist_index|)s%(playlist_index& - |)s%(title)s - %(id)s.%(ext)s"
+#-o "chapter:%(playlist_index|)s%(playlist_index& - |)s%(title)s - %(id)s%(section_number|)02d%(- chapter_number& |)02d%(section_title|)s%(section_title&|)s.%(ext)s"
+
+# meta
+--embed-metadata 
+--no-embed-chapters
+
+# Embed thumbnail in the video as cover art
+--embed-thumbnail 
+
+# Format to convert the audio to when -x is used. (currently supported: best (default), aac, alac, flac, m4a, mp3, opus, vorbis, wav).
+--audio-format m4a

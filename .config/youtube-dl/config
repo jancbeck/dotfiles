@@ -1,8 +1,0 @@
-# Do not copy the mtime
---no-mtime
-
-# WORKAROUND FOR CERTIFICATE_VERIFY_FAILED ERROR
---no-check-certificate
-
-# Save all videos under Downloads directory in your home directory
---output "~/Downloads/%(title)s-%(id)s.%(ext)s"
