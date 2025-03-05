@@ -1,38 +1,44 @@
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+alias ll='ls -la --color'
+
+# homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-# tabtab source for electron-forge package
-# uninstall by removing these lines or running `tabtab uninstall electron-forge`
-[[ -f /opt/homebrew/lib/node_modules/electron-forge/node_modules/tabtab/.completions/electron-forge.zsh ]] && . /opt/homebrew/lib/node_modules/electron-forge/node_modules/tabtab/.completions/electron-forge.zsh
+if type brew &>/dev/null; then
+    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+
+    autoload -Uz compinit
+    compinit
+fi
+
+export PATH=/usr/local/bin:$PATH
+export PATH="$HOME/.local/bin:$PATH"
+# homebrew end
+
+# pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+# pyenv end
+
 # pnpm
-export PNPM_HOME="/Users/jan/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
 
-
-# Created by `pipx` on 2024-03-05 14:47:47
-export PATH="$PATH:/Users/jan/.local/bin"
-
-eval "$(pyenv init --path)"
-eval "$(pyenv virtualenv-init -)"
-
-# bun completions
-[ -s "/Users/jan/.bun/_bun" ] && source "/Users/jan/.bun/_bun"
-
-# bun
+# bun 
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+# bun end
 
-#nvm
+# nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-ln -sf "$(which node)" "$HOME/.local/bin/node"
+# nvm end

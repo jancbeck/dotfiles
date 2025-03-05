@@ -1,33 +1,113 @@
 [user]
+# Uses SSH key for commit signing, providing better security integration than GPG
+	signingkey = ~/.ssh/id_ed25519.pub
 	name = Jan Beck
-	email = jancbeck@users.noreply.github.com
-[filter "media"]
-	required = true
-	clean = git media clean %f
-	smudge = git media smudge %f
-[color]
-	ui = true
-[push]
-	default = matching
+	email = 865311+jancbeck@users.noreply.github.com
+
 [core]
+# Sets vim as the text editor for commit messages and interactive commands
 	editor = vim
+# Makes Git case-sensitive (important on macOS which has case-insensitive filesystem)
 	ignorecase = false
-[filter "hawser"]
-	clean = git hawser clean %f
-	smudge = git hawser smudge %f
-	required = true
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-[credential]
-	helper = osxkeychain
+# Ensure line endings are normalized to LF
+	autocrlf = input
+# Show non-ASCII characters in filenames properly
+	quotepath = false
+
+[color]
+# Enables color highlighting for branch, status, diff and other commands
+	ui = true
+
+[push]
+# Push only the current branch if its named upstream is identical
+	default = simple
+# Automatically set up tracking for new branches
+	autoSetupRemote = true
+
 [merge]
+# Configures VS Code as the tool to resolve merge conflicts
 	tool = vscode
+# Include original commit messages in merge commit message
+	log = true
+# Show common ancestor chunks in conflict blocks
+	conflictstyle = diff3
+
 [mergetool "vscode"]
+# Opens VS Code with the merged file and waits for editor to close before continuing
 	cmd = code --wait $MERGED
+
 [diff]
+# Uses VS Code for visual comparison of changes
 	tool = vscode
+# Show moved lines differently than added/removed lines
+	colorMoved = zebra
+
 [difftool "vscode"]
+# Launches VS Code in diff mode to compare local and remote versions
 	cmd = code --wait --diff $LOCAL $REMOTE
+
+[commit]
+# Automatically signs all commits for verification and security
+	gpgsign = true
+
+[rerere]
+# Records and reuses conflict resolutions, saving time on repetitive merges
+	enabled = true
+
+[alias]
+# Safe alternative to force push that prevents overwriting others' commits
+	pushforce = push --force-with-lease
+# Concise status output
+	st = status -sb
+# Pretty-formatted log with branch graph
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+# Last commit details
+	last = log -1 HEAD
+# Amend the most recent commit without editing message
+	amend = commit --amend --no-edit
+# Show all aliases
+	aliases = !git config --get-regexp ^alias\\. | sed 's/^alias\\.\\([^ ]*\\) /\\1 = /'
+
+[safe]
+# Allows Git to operate in Homebrew directory even when owned by another user
+	directory = /opt/homebrew
+
+[gpg]
+# Uses SSH keys instead of GPG for signing, simplifying your key management
+	format = ssh
+
+[init]
+# Creates new repos with 'main' branch instead of 'master' by default
+	defaultBranch = main
+
+[credential]
+# Securely stores Git credentials in macOS keychain to avoid repetitive authentication
+	helper = osxkeychain
+
+[pull]
+# Rebase local changes on pull for cleaner history
+	rebase = true
+# Ensure fast-forward merge when possible
+	ff = only
+
+[rebase]
+# Automatically stash and unstash changes during rebase
+	autoStash = true
+
+[fetch]
+# Automatically prune deleted remote branches when fetching
+	prune = true
+# Prune tags too
+	pruneTags = true
+
+[status]
+# Show untracked files in directories rather than just the directory
+	showUntrackedFiles = all
+
+[blame]
+# Ignore whitespace changes in blame
+	ignoreRevsFile = .git-blame-ignore-revs
+
+[includeIf "gitdir:~/workspace/"]
+# Loads workspace-specific Git settings when working in projects under ~/workspace/
+	path = ~/workspace/.gitconfig
