@@ -101,7 +101,7 @@ workspace/
 └── resources/    # Shared resources and reference materials
 ```
 
-Add a `.gitconfig´ file for workspace-specific rules (like maintenance).
+Add a `.gitconfig`` file for workspace-specific rules (like maintenance).
 
 ### Finder
 
