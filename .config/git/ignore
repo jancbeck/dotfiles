@@ -1,29 +1,48 @@
-# Automatically created by GitHub for Mac
-# To make edits, delete these initial comments, or else your changes may be lost!
-
-# General
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Icon must end with two \r
-Icon
-
-# Thumbnails
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+ 
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+ 
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+ 
+# OS generated files #
+######################
 ._*
-
-# Files that might appear in the root of a volume
+.apdisk
+.AppleDB
+.AppleDesktop
+.com.apple.timemachine.donotpresent
 .DocumentRevisions-V100
+.DS_Store
 .fseventsd
 .Spotlight-V100
 .TemporaryItems
 .Trashes
 .VolumeIcon.icns
-.com.apple.timemachine.donotpresent
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
 Network Trash Folder
 Temporary Items
-.apdisk
+
+
+# Workspace files are user-specific
+*.sublime-workspace
