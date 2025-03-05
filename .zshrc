@@ -8,7 +8,6 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias ll='ls -la --color'
 
 # homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)"
 
 if type brew &>/dev/null; then
     FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
