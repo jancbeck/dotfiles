@@ -15,9 +15,10 @@ if type brew &>/dev/null; then
   autoload -Uz compinit
   compinit
   export PATH=/usr/local/bin:$PATH
-  export PATH="$HOME/.local/bin:$PATH"
 fi
 
 # homebrew end
+
+export PATH="$HOME/.local/bin:$PATH"
 
 
