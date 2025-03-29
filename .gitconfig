@@ -6,7 +6,7 @@
 
 [core]
 # Sets vim as the text editor for commit messages and interactive commands
-	editor = vim
+	editor = code --wait
 # Makes Git case-sensitive (important on macOS which has case-insensitive filesystem)
 	ignorecase = false
 # Ensure line endings are normalized to LF
@@ -34,7 +34,7 @@
 
 [mergetool "vscode"]
 # Opens VS Code with the merged file and waits for editor to close before continuing
-	cmd = code --wait $MERGED
+	cmd = "code --wait "
 
 [diff]
 # Uses VS Code for visual comparison of changes
@@ -44,7 +44,7 @@
 
 [difftool "vscode"]
 # Launches VS Code in diff mode to compare local and remote versions
-	cmd = code --wait --diff $LOCAL $REMOTE
+	cmd = "code --wait --diff  "
 
 [commit]
 # Automatically signs all commits for verification and security

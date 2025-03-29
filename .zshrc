@@ -22,3 +22,6 @@ fi
 export PATH="$HOME/.local/bin:$PATH"
 
 
+if ! ssh-add -l | grep -q "id_ed25519"; then
+  ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+fi
