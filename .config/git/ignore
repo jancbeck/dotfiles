@@ -46,3 +46,4 @@ Temporary Items
 
 # Workspace files are user-specific
 *.sublime-workspace
+*.code-workspace
