@@ -25,3 +25,10 @@ export PATH="$HOME/.local/bin:$PATH"
 if ! ssh-add -l | grep -q "id_ed25519"; then
   ssh-add --apple-use-keychain ~/.ssh/id_ed25519
 fi
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/jb/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
