@@ -111,3 +111,8 @@
 [includeIf "gitdir:~/workspace/"]
 # Loads workspace-specific Git settings when working in projects under ~/workspace/
 	path = ~/workspace/.gitconfig
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
