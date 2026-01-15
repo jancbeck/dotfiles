@@ -26,9 +26,16 @@ if ! ssh-add -l | grep -q "id_ed25519"; then
   ssh-add --apple-use-keychain ~/.ssh/id_ed25519
 fi
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/jb/.docker/completions $fpath)
+fpath=($HOME/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:$HOME/.lmstudio/bin"
