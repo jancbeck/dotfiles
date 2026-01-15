@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash",
-      "Skill(cfg)"
+      "Skill(cfg)",
+      "mcp__context7__*"
     ],
     "ask": [
       "Bash(git push:*)",
@@ -44,7 +45,8 @@
     "feature-dev@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
     "claude-hud@claude-hud": true,
-    "commit-commands@claude-plugins-official": true
+    "commit-commands@claude-plugins-official": true,
+    "document-skills@anthropic-agent-skills": true
   },
   "autoUpdatesChannel": "latest"
 }
