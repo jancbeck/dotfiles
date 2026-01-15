@@ -7,5 +7,28 @@
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/statusline-wrapper.sh"
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.message // empty' | say -v 'Jamie (Premium)' -r 250"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f package.json ] && grep -q '\"format\"' package.json && { [ -f bun.lock ] || [ -f bun.lockb ] && bun run format || [ -f yarn.lock ] && yarn run format || [ -f pnpm-lock.yaml ] && pnpm run format || [ -f package-lock.json ] && npm run format; } || true"
+          }
+        ]
+      }
+    ]
   }
 }

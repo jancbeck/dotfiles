@@ -1,1 +1,2 @@
 - When writing plans or reporting information to me, be extremely concise. Sacrifice grammar for the sake of concision. 
+- End every plan with a numbered list of concrete steps. This should be the last thing visible in the terminal.
