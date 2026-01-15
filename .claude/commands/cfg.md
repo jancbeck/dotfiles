@@ -35,6 +35,14 @@ Show the user:
 - How many commits ahead/behind of origin
 - Any modified files not yet staged
 
+### Step 2.5: Check for Untracked Files
+Since `showUntrackedFiles` is disabled, manually check key directories for new files:
+```bash
+config ls-files --others ~/.claude/commands/
+```
+
+If any untracked files are found, ask the user if they want to add them.
+
 ### Step 3: Show Diff
 If there are unstaged changes:
 ```bash
