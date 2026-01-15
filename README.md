@@ -113,4 +113,4 @@ brew install --cask qlmarkdown
 
 ## Credits
 
-[Dotfiles: Best way to store in a bare git](repositoryhttps://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/)
+[Dotfiles: Best way to store in a bare git repository](https://www.atlassian.com/git/tutorials/dotfiles)
