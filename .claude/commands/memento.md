@@ -6,7 +6,7 @@ description: Extract session memories into CLAUDE.md - because Claude forgets, b
 
 Usage: `/memento [--project PATH] [--user PATH]`
 
-Analyze this conversation to extract **actionable** memory updates for CLAUDE.md files.
+Analyze this conversation to extract **actionable** memory updates for CLAUDE.md and SKILL.md files.
 
 ## Step 0: Resolve Paths
 
@@ -39,6 +39,7 @@ Review the conversation for:
 - **Preferences expressed** - how the user likes things done (explicit or implicit)
 - **Project conventions discovered** - file structure, tooling, patterns in THIS codebase
 - **Reusable learnings** - insights that apply across all projects
+- **Improvements for Skills used**
 
 ## Step 2: Categorize Suggestions
 
