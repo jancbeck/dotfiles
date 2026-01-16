@@ -1,0 +1,22 @@
+{
+  "lineLayout": "expanded",
+  "showSeparators": false,
+  "pathLevels": 1,
+  "display": {
+    "showModel": true,
+    "showContextBar": true,
+    "showTools": true,
+    "showAgents": true,
+    "showTodos": true,
+    "showConfigCounts": true,
+    "showTokenBreakdown": true,
+    "showUsage": true,
+    "showDuration": true
+  },
+  "gitStatus": {
+    "enabled": true,
+    "showDirty": true,
+    "showAheadBehind": true,
+    "showFileStats": true
+  }
+}
