@@ -1,15 +1,7 @@
 {
   "permissions": {
-    "allow": [
-      "Bash",
-      "Skill(cfg)",
-      "mcp__context7__*"
-    ],
-    "ask": [
-      "Bash(git push:*)",
-      "Bash(git publish:*)",
-      "Bash(rm:*)"
-    ],
+    "allow": ["Skill(cfg)", "mcp__context7__*"],
+    "ask": ["Bash(*:git push*)", "Bash(*:git publish*)", "Bash(*:rm *)"],
     "defaultMode": "plan"
   },
   "model": "opus",
@@ -19,18 +11,27 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.message // empty' | say -v 'Jamie (Premium)' -r 250"
+            "command": "$HOME/.claude/scripts/kokoro-speak || true"
           }
         ]
       }
     ],
-    "PostToolUse": [
+    "PermissionRequest": [
       {
-        "matcher": "Write|Edit",
         "hooks": [
           {
             "type": "command",
-            "command": "[ -f package.json ] && grep -q '\"format\"' package.json && { [ -f bun.lock ] || [ -f bun.lockb ] && bun run format || [ -f yarn.lock ] && yarn run format || [ -f pnpm-lock.yaml ] && pnpm run format || [ -f package-lock.json ] && npm run format; } || true"
+            "command": "$HOME/.claude/scripts/kokoro-speak || true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/scripts/kokoro-speak || true"
           }
         ]
       }
@@ -46,7 +47,8 @@
     "code-simplifier@claude-plugins-official": true,
     "claude-hud@claude-hud": true,
     "commit-commands@claude-plugins-official": true,
-    "document-skills@anthropic-agent-skills": true
+    "document-skills@anthropic-agent-skills": true,
+    "voicemode@mbailey": true
   },
   "autoUpdatesChannel": "latest"
 }
