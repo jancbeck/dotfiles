@@ -1,7 +1,14 @@
 {
   "permissions": {
-    "allow": ["Skill(cfg)", "mcp__context7__*"],
-    "ask": ["Bash(*:git push*)", "Bash(*:git publish*)", "Bash(*:rm *)"],
+    "allow": [
+      "Skill(cfg)",
+      "mcp__context7__*"
+    ],
+    "ask": [
+      "Bash(*:git push*)",
+      "Bash(*:git publish*)",
+      "Bash(*:rm *)"
+    ],
     "defaultMode": "plan"
   },
   "model": "opus",
