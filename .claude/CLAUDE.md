@@ -1,2 +1,4 @@
-- When writing plans or reporting information to me, be extremely concise. Sacrifice grammar for the sake of concision. 
+- When writing plans or reporting information to me, be extremely concise. Sacrifice grammar for the sake of concision.
 - End every plan with a numbered list of concrete steps. This should be the last thing visible in the terminal.
+- Prefer short, meaningful tests over comprehensive coverage. Tests should catch bugs and be easy to maintain when code changes.
+- Don't create exhaustive test suites unless asked. Focus on core behaviors and edge cases that matter.
