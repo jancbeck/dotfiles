@@ -2,6 +2,7 @@
 name: cfg
 description: Sync dotfiles - pull, resolve conflicts, commit changes, and push
 allowed-tools: Bash, Read, Edit, Write
+disable-model-invocation: true
 ---
 
 # Dotfiles Sync
@@ -38,7 +39,7 @@ Show the user:
 ### Step 2.5: Check for Untracked Files
 Since `showUntrackedFiles` is disabled, manually check key directories for new files:
 ```bash
-config ls-files --others ~/.claude/commands/
+config ls-files --others ~/.claude/skills/
 ```
 
 If any untracked files are found, ask the user if they want to add them.

@@ -1,5 +1,7 @@
 ---
+name: memento
 description: Extract session memories into CLAUDE.md - because Claude forgets, but your notes don't
+disable-model-invocation: true
 ---
 
 # Memento
@@ -56,10 +58,15 @@ Review the conversation for:
 
 ### Where suggestions go:
 
-**Project Memory (`$PROJECT_PATH`)** - PREFER THIS when:
-- In a specific project folder (not home/general directory)
-- Convention is specific to this codebase
-- Tool/file structure is project-specific
+**Project Skills/Agents (`.claude/skills/*/SKILL.md`, `.claude/agents/*.md`)** - PREFER when:
+- Learning is about how a specific skill or agent should behave
+- Correction relates to a skill that was used in this session
+- Convention improves a specific workflow (biographing, citation, etc.)
+
+**Project Memory (`$PROJECT_PATH`)** - Use when:
+- Convention is project-wide but not skill-specific
+- Architecture or file structure pattern
+- General project guidance that doesn't fit a skill
 
 **User Memory (`$USER_PATH`)** - Use when:
 - Preference applies across ALL projects
@@ -68,7 +75,12 @@ Review the conversation for:
 
 ## Step 3: Check for Duplicates
 
-Read both CLAUDE.md files before suggesting. Never suggest something already present.
+Before suggesting, read:
+- Both CLAUDE.md files
+- Any skill files (`.claude/skills/*/SKILL.md`) relevant to the session
+- Any agent files (`.claude/agents/*.md`) that were used
+
+Never suggest something already present in these files.
 
 ## Step 4: Present Suggestions (or say "nothing meaningful")
 
@@ -77,18 +89,26 @@ If you have ZERO actionable suggestions, just say:
 
 If you DO have suggestions, use `AskUserQuestion` with multiSelect.
 
-**IMPORTANT: Always show BOTH categories in the same AskUserQuestion call when you have suggestions for each.**
+**IMPORTANT: Show ALL relevant categories in the same AskUserQuestion call.**
 
-The `questions` array should include:
-1. Project Memory question (if any project suggestions)
-2. User Memory question (if any user suggestions)
-
-This shows them as separate tabs so the user can review and select from both.
+The `questions` array can include (only include categories with suggestions):
+1. Skills/Agents question (if any skill or agent improvements)
+2. Project Memory question (if any project-wide suggestions)
+3. User Memory question (if any universal suggestions)
 
 Example structure:
 ```json
 {
   "questions": [
+    {
+      "header": "Skills/Agents",
+      "question": "Which improvements should I add to skill/agent files?",
+      "multiSelect": true,
+      "options": [
+        {"label": "biographing: [suggestion]", "description": "..."},
+        {"label": "gardener: [suggestion]", "description": "..."}
+      ]
+    },
     {
       "header": "Project Memory",
       "question": "Which insights should I add to $PROJECT_PATH?",
@@ -105,6 +125,8 @@ Example structure:
 }
 ```
 
+For Skills/Agents, prefix each option label with the target file (e.g., "biographing: ...").
+
 Rules:
 - Max 4 suggestions per category
 - Each suggestion must be 1-2 lines, specific, actionable
@@ -113,13 +135,18 @@ Rules:
 ## Step 5: Apply Selected Suggestions
 
 For each selected suggestion:
-1. Read the target CLAUDE.md (create if needed)
-2. Append under appropriate section (create section if needed)
-3. Use Edit tool
+1. Read the target file (CLAUDE.md or skill/agent file)
+2. Find appropriate section (create if needed)
+3. Append the suggestion using Edit tool
+
+**For skill/agent files:** Add to an existing relevant section, or create a new section if appropriate (e.g., "## Constraints", "## Tips", "## Common Mistakes").
 
 ## Output Format
 
 ```
+✅ Added to .claude/skills/biographing/SKILL.md:
+- [suggestion]
+
 ✅ Added to $PROJECT_PATH:
 - [suggestion]
 
