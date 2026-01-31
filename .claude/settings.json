@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Skill(cfg)",
-      "mcp__context7__*"
+      "mcp__context7__*",
+      "Bash"
     ],
     "ask": [
       "Bash(*:git push*)",
