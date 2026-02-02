@@ -1,0 +1,3 @@
+# Option key sends Alt/Escape sequences (like iTerm2 "Esc+" mode)
+macos-option-as-alt = true
+theme = light:Builtin Light,dark:Builtin Dark
