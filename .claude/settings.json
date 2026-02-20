@@ -1,4 +1,7 @@
 {
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
   "permissions": {
     "allow": [
       "Skill(cfg)",
@@ -12,7 +15,6 @@
     ],
     "defaultMode": "plan"
   },
-  "model": "opus",
   "hooks": {
     "Notification": [
       {
@@ -68,10 +70,9 @@
     "commit-commands@claude-plugins-official": true,
     "document-skills@anthropic-agent-skills": true,
     "voicemode@mbailey": false,
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true,
+    "context7@claude-plugins-official": true
   },
   "autoUpdatesChannel": "latest",
-  "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
-  }
+  "skipDangerousModePermissionPrompt": true
 }
