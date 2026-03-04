@@ -20,20 +20,29 @@
       "Bash(git ls-tree *)",
       "Bash(config *)",
       "Bash(tree *)",
-      "Bash(* --help)",
-      "Bash(* --version)",
       "WebSearch",
       "mcp__plugin_context7_context7__resolve-library-id",
       "mcp__plugin_context7_context7__query-docs",
       "mcp__ide__getDiagnostics"
     ],
     "ask": ["Bash(git push *)", "Bash(git publish *)", "Bash(rm *)"],
+    "deny": [
+      "Read(~/.ssh/**)",
+      "Edit(~/.ssh/**)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Edit(**/.env)",
+      "Edit(**/.env.*)"
+    ],
     "defaultMode": "plan"
   },
+  "skipDangerousModePermissionPrompt": true,
   "sandbox": {
     "enabled": true,
     "filesystem": {
-      "allowWrite": ["~/workspace", "//tmp/claude"]
+      "allowWrite": ["~/workspace", "//tmp/claude"],
+      "denyRead": ["~/.ssh", "**/.env", "**/.env.*"],
+      "denyWrite": ["~/.ssh", "**/.env", "**/.env.*"]
     }
   },
   "hooks": {
@@ -91,6 +100,5 @@
     "typescript-lsp@claude-plugins-official": false,
     "context7@claude-plugins-official": true
   },
-  "autoUpdatesChannel": "latest",
-  "skipDangerousModePermissionPrompt": true
+  "autoUpdatesChannel": "latest"
 }
