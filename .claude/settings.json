@@ -10,9 +10,9 @@
       "Bash"
     ],
     "ask": [
-      "Bash(*:git push*)",
-      "Bash(*:git publish*)",
-      "Bash(*:rm *)"
+      "Bash(git push *)",
+      "Bash(git publish *)",
+      "Bash(rm *)"
     ],
     "defaultMode": "plan"
   },
@@ -66,13 +66,11 @@
   "enabledPlugins": {
     "feature-dev@claude-plugins-official": false,
     "claude-hud@claude-hud": true,
-    "commit-commands@claude-plugins-official": false,
+    "commit-commands@claude-plugins-official": true,
     "document-skills@anthropic-agent-skills": false,
-    "voicemode@mbailey": false,
     "typescript-lsp@claude-plugins-official": false,
     "context7@claude-plugins-official": true
   },
-  "alwaysThinkingEnabled": false,
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true
 }

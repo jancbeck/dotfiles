@@ -39,7 +39,7 @@ Show the user:
 ### Step 2.5: Check for Untracked Files
 Since `showUntrackedFiles` is disabled, manually check key directories for new files:
 ```bash
-config ls-files --others ~/.claude/skills/
+config ls-files --others --exclude-standard ~/.claude/skills/
 ```
 
 If any untracked files are found, ask the user if they want to add them.
