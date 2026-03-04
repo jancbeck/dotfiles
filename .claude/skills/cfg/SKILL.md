@@ -1,7 +1,6 @@
 ---
 name: cfg
 description: Sync dotfiles - pull, resolve conflicts, commit changes, and push
-allowed-tools: Bash, Read, Edit, Write
 disable-model-invocation: true
 ---
 
