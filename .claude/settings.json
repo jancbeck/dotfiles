@@ -90,11 +90,11 @@
     "command": "bash -c '\"$HOME/.bun/bin/bun\" \"$(ls -td ~/.claude/plugins/cache/claude-hud/claude-hud/*/ 2>/dev/null | head -1)src/index.ts\"'"
   },
   "enabledPlugins": {
-    "feature-dev@claude-plugins-official": false,
     "claude-hud@claude-hud": true,
     "commit-commands@claude-plugins-official": true,
     "document-skills@anthropic-agent-skills": false,
-    "context7@claude-plugins-official": true
+    "context7@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true
   },
   "sandbox": {
     "enabled": true,
@@ -119,5 +119,6 @@
   "autoUpdatesChannel": "latest",
   "voiceEnabled": true,
   "skipDangerousModePermissionPrompt": true,
-  "Co-Authored-By": false
+  "Co-Authored-By": false,
+  "model": "opus"
 }
