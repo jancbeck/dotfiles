@@ -41,7 +41,9 @@ Since `showUntrackedFiles` is disabled, manually check key directories for new f
 config ls-files --others --exclude-standard ~/.claude/skills/
 ```
 
-If any untracked files are found, ask the user if they want to add them.
+Ignore: `generate-image/`
+
+If any other untracked files are found, ask the user if they want to add them.
 
 ### Step 3: Show Diff
 If there are unstaged changes:
