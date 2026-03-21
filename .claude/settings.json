@@ -42,6 +42,7 @@
     ],
     "defaultMode": "plan"
   },
+  "model": "opus",
   "hooks": {
     "Notification": [
       {
@@ -94,10 +95,15 @@
     "commit-commands@claude-plugins-official": true,
     "document-skills@anthropic-agent-skills": false,
     "context7@claude-plugins-official": true,
-    "feature-dev@claude-plugins-official": true
+    "feature-dev@claude-plugins-official": true,
+    "telegram@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true
   },
   "sandbox": {
     "enabled": true,
+    "network": {
+      "allowLocalBinding": true
+    },
     "filesystem": {
       "allowWrite": [
         "~/workspace",
@@ -115,10 +121,8 @@
       ]
     }
   },
-  "effortLevel": "high",
   "autoUpdatesChannel": "latest",
   "voiceEnabled": true,
   "skipDangerousModePermissionPrompt": true,
-  "Co-Authored-By": false,
-  "model": "opus"
+  "Co-Authored-By": false
 }

@@ -111,6 +111,35 @@ Add a `.gitconfig`` file for workspace-specific rules (like maintenance).
 brew install --cask qlmarkdown
 ```
 
+### Ghostty + tmux: Persistent Terminal Sessions
+
+Claude Code sessions survive Ghostty restarts and reboots via Ghostty + tmux + tmux-resurrect.
+
+**Files:**
+- `~/.config/ghostty/config` — keybindings and shell command
+- `~/.config/ghostty/persist.sh` — session attach/create logic run on every new tab
+- `~/.tmux.conf` — tmux config with plugin setup and Ghostty keybind targets
+
+**How it works:**
+- Every Ghostty tab runs `persist.sh` instead of a plain shell
+- `persist.sh` attaches to the next free named tmux session (`claude_1`..`claude_20`), or creates one
+- tmux-continuum auto-saves session layout every 15 min and auto-restores on tmux server start (after reboot)
+- Ghostty keybinds route through the tmux prefix (`Ctrl+B`) so they work even with Claude Code in the foreground
+
+**Keybindings:**
+
+| Key | Action |
+|-----|--------|
+| `Cmd+T` | New tab → attach to next free session |
+| `Cmd+W` | Kill current session and close tab |
+| `Cmd+S` | Manually save session layout |
+| `Cmd+Shift+T` | Manually restore saved sessions |
+
+**Fresh machine setup:**
+1. Clone dotfiles (see Installation above)
+2. Install Ghostty and Homebrew tmux: `brew install tmux`
+3. Start tmux once: `tmux` — TPM will auto-clone and install all plugins, then exit
+
 ## Credits
 
 [Dotfiles: Best way to store in a bare git repository](https://www.atlassian.com/git/tutorials/dotfiles)

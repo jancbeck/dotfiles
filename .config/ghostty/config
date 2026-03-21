@@ -1,4 +1,39 @@
 # Option key sends Alt/Escape sequences (like iTerm2 "Esc+" mode)
 macos-option-as-alt = left
-cursor-style = block
+
+# Cursor preferences
+cursor-style = "block"
+cursor-style-blink = true
+
+# Slim tab bar at top; full "hidden" breaks Cmd+T (new tabs become windows)
+macos-titlebar-style = "tabs"
+macos-titlebar-proxy-icon = "hidden"
 theme = light:Builtin Light,dark:Builtin Dark
+
+# ---------------------------------------------------------------------------
+# Keybindings
+# See persist.sh for how sessions are managed.
+# All tmux commands are routed via the tmux prefix (Ctrl+B = \x02) so they
+# are intercepted by tmux before Claude Code or any other foreground app sees
+# them. Without this, `text:` keystrokes go straight to the foreground process.
+# ---------------------------------------------------------------------------
+
+# Cmd+T — open a new tab; persist.sh finds the next free tmux session
+keybind = super+t=new_tab
+
+# Cmd+W — kill the current tmux session and close the tab
+keybind = super+w=text:\x02q
+
+# Cmd+S — manually save session layout (tmux-resurrect)
+keybind = super+s=text:\x02s
+
+# Cmd+Shift+T — restore all saved sessions (useful after manual tmux kill-server)
+# Note: after reboot this runs automatically via tmux-continuum; no need to invoke manually
+keybind = super+shift+t=text:\x02r
+
+# ---------------------------------------------------------------------------
+# Shell command
+# Ghostty runs persist.sh instead of a plain shell for every new tab.
+# persist.sh attaches to the next free tmux session, or creates one.
+# ---------------------------------------------------------------------------
+command = ~/.config/ghostty/persist.sh
