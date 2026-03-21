@@ -123,6 +123,5 @@
   },
   "autoUpdatesChannel": "latest",
   "voiceEnabled": true,
-  "skipDangerousModePermissionPrompt": false,
   "Co-Authored-By": false
 }
