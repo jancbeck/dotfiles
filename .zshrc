@@ -44,3 +44,6 @@ compinit
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:$HOME/.lmstudio/bin"
+
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"
