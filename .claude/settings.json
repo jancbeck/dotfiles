@@ -101,9 +101,6 @@
   },
   "sandbox": {
     "enabled": true,
-    "network": {
-      "allowLocalBinding": true
-    },
     "filesystem": {
       "allowRead": [
         "~/.summarize"
@@ -124,10 +121,10 @@
       ]
     },
     "network": {
+      "allowLocalBinding": true,
       "allowedDomains": ["api.github.com", "*.npmjs.org"]
     }
   },
   "autoUpdatesChannel": "latest",
-  "voiceEnabled": true,
-  "Co-Authored-By": false
+  "voiceEnabled": true
 }
