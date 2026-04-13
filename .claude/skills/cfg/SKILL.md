@@ -59,12 +59,7 @@ If there are changes to commit:
 2. Draft a concise commit message based on the diff
 3. Commit with:
 ```bash
-config commit -m "$(cat <<'EOF'
-<commit message>
-
-Co-Authored-By: Claude <noreply@anthropic.com>
-EOF
-)"
+config commit -m "<commit message>"
 ```
 
 ### Step 5: Push
