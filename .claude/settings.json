@@ -3,7 +3,8 @@
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "128000",
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
-    "ENABLE_CLAUDEAI_MCP_SERVERS": "false"
+    "ENABLE_CLAUDEAI_MCP_SERVERS": "false",
+    "CLAUDE_CODE_NO_FLICKER": "1"
   },
   "attribution": {
     "commit": "",
@@ -102,9 +103,6 @@
   "sandbox": {
     "enabled": true,
     "filesystem": {
-      "allowRead": [
-        "~/.summarize"
-      ],
       "allowWrite": [
         "~/workspace",
         "//tmp/claude"
@@ -118,6 +116,9 @@
         "~/.ssh",
         "**/.env",
         "**/.env.*"
+      ],
+      "allowRead": [
+        "~/.summarize"
       ]
     },
     "network": {
