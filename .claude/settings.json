@@ -98,10 +98,18 @@
     "context7@claude-plugins-official": true,
     "feature-dev@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
-    "code-simplifier@claude-plugins-official": true
+    "code-simplifier@claude-plugins-official": true,
+    "telegram@claude-plugins-official": true
   },
   "sandbox": {
     "enabled": true,
+    "network": {
+      "allowedDomains": [
+        "api.github.com",
+        "*.npmjs.org"
+      ],
+      "allowLocalBinding": true
+    },
     "filesystem": {
       "allowWrite": [
         "~/workspace",
@@ -120,10 +128,6 @@
       "allowRead": [
         "~/.summarize"
       ]
-    },
-    "network": {
-      "allowLocalBinding": true,
-      "allowedDomains": ["api.github.com", "*.npmjs.org"]
     }
   },
   "autoUpdatesChannel": "latest",
