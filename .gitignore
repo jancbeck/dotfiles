@@ -2,3 +2,6 @@
 .zprofile
 .zshrc.local
 .zshenv.local
+
+# Device-local git config (per-machine signing key path)
+.gitconfig.local

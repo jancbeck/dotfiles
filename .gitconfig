@@ -1,6 +1,4 @@
 [user]
-# Uses SSH key for commit signing, providing better security integration than GPG
-	signingkey = ~/.ssh/id_ed25519.pub
 	name = Jan Beck
 	email = 865311+jancbeck@users.noreply.github.com
 
@@ -46,10 +44,6 @@
 # Launches VS Code in diff mode to compare local and remote versions
 	cmd = "code --wait --diff  "
 
-[commit]
-# Automatically signs all commits for verification and security
-	gpgsign = true
-
 [rerere]
 # Records and reuses conflict resolutions, saving time on repetitive merges
 	enabled = true
@@ -71,10 +65,6 @@
 [safe]
 # Allows Git to operate in Homebrew directory even when owned by another user
 	directory = /opt/homebrew
-
-[gpg]
-# Uses SSH keys instead of GPG for signing, simplifying your key management
-	format = ssh
 
 [init]
 # Creates new repos with 'main' branch instead of 'master' by default
@@ -116,3 +106,6 @@
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
+# Device-local signing config (enclave key path differs per machine); gitignored.
+[include]
+	path = ~/.gitconfig.local

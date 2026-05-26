@@ -144,6 +144,41 @@ Why the split:
 - **Why pyenv init is split.** `pyenv init --path` (PATH-only) is in `.zprofile`. The interactive `pyenv init -` and `pyenv virtualenv-init -` live in `.zshrc.local`. If the interactive hooks fire in non-interactive shells — e.g. tmux-resurrect restoring 20 sessions at reboot — they all race for the `~/.pyenv/shims/.pyenv-shim` rehash lock and one stale leftover blocks every future shell with `pyenv: cannot rehash`. Manual recovery: `rm ~/.pyenv/shims/.pyenv-shim`.
 - **SSH signing via Secure Enclave.** `.zshenv` sets `SSH_AUTH_SOCK` to [Secretive](https://github.com/maxgoedjen/secretive)'s agent (guarded — no-op without it), so commit signing and SSH auth use a non-exportable Secure Enclave key and no private key ever touches disk. `.zshrc`'s ssh-agent bootstrap loads the on-disk key only when Secretive isn't the active agent.
 
+### Commit signing via Secure Enclave
+
+Commits are signed with an SSH key held in the macOS Secure Enclave through [Secretive](https://github.com/maxgoedjen/secretive). The private key is non-exportable — nothing on the machine (sandboxed or not) can read or copy it; it only signs. `~/.zshenv` points `SSH_AUTH_SOCK` at Secretive's agent socket so signing works in every shell.
+
+**Why the git config is split.** Each machine's enclave key has its own identifier, so the `user.signingkey` path differs per device and must not live in the synced `~/.gitconfig`:
+
+- `~/.gitconfig` (tracked) ends with `[include] path = ~/.gitconfig.local`.
+- `~/.gitconfig.local` (gitignored) holds the device-specific signing block: `user.signingkey`, `commit.gpgsign`, `gpg.format = ssh`, `gpg.ssh.allowedSignersFile`.
+
+A machine without `~/.gitconfig.local` simply doesn't sign — git ignores a missing include, so commits don't break.
+
+```mermaid
+flowchart LR
+    GC["~/.gitconfig<br/>tracked · portable"] -->|"[include]"| GCL["~/.gitconfig.local<br/>gitignored · per-device signingkey"]
+```
+
+**New machine setup:**
+
+1. Install Secretive: `brew install --cask secretive`, then open it.
+2. Create a Secure Enclave key (the **+**). Leave *"Authenticate before use"* **off** for unattended signing. Secretive writes the public key to `~/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/PublicKeys/<id>.pub`.
+3. Add that public key to GitHub → Settings → SSH and GPG keys → New → type **Signing key**.
+4. Create `~/.gitconfig.local` (gitignored), replacing the path with your new key's `.pub`:
+   ```ini
+   [user]
+       signingkey = ~/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/PublicKeys/<id>.pub
+   [commit]
+       gpgsign = true
+   [gpg]
+       format = ssh
+   [gpg "ssh"]
+       allowedSignersFile = ~/.config/git/allowed_signers
+   ```
+5. *(Optional — enables local `git log --show-signature` verification)* create `~/.config/git/allowed_signers` with one line: `<your-git-email> <full contents of the .pub file>`.
+6. `SSH_AUTH_SOCK` is already exported by the tracked `~/.zshenv` (guarded), so signing works as soon as Secretive is running. Verify: `git log --show-signature -1` shows `Good "git" signature`.
+
 ### Ghostty + tmux: Persistent Terminal Sessions
 
 Claude Code sessions survive Ghostty restarts and reboots via Ghostty + tmux + tmux-resurrect.
