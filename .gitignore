@@ -1,0 +1,4 @@
+# Device-local shell files — never synced across machines
+.zprofile
+.zshrc.local
+.zshenv.local

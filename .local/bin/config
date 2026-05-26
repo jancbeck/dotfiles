@@ -1,0 +1,5 @@
+#!/bin/sh
+# Dotfiles bare-repo wrapper: run git against the $HOME config repo from any
+# shell or subprocess — interactive or not. PATH-resolvable counterpart to the
+# `config` alias in ~/.zshrc.
+exec /usr/bin/git --git-dir="$HOME/.cfg" --work-tree="$HOME" "$@"

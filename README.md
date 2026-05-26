@@ -113,18 +113,36 @@ brew install --cask qlmarkdown
 
 ### Shell startup files
 
-Three files, split by sync scope and shell phase:
+Five files, split by **sync scope** (tracked = synced & public; `.local` = device-local & gitignored) and **shell phase** (which zsh startup file sources them). zsh sources them in order: `.zshenv` (always) → `.zprofile` (login shells) → `.zshrc` (interactive shells).
 
 | File | Tracked? | Runs in | Holds |
 |------|----------|---------|-------|
-| `~/.zprofile` | no (device-local) | login shells | PATH-only env: `brew shellenv`, `pyenv init --path`, `PNPM_HOME`, `BUN_INSTALL`, `NVM_DIR` |
-| `~/.zshrc` | yes (synced via `config` alias) | interactive shells | Cross-device aliases, completions, ssh-agent bootstrap. Early-returns for non-interactive shells. Sources `~/.zshrc.local` for per-device extras |
-| `~/.zshrc.local` | no (device-local) | interactive shells | Tokens + interactive init for device-specific tools: `pyenv init -`, `pyenv virtualenv-init -`, `nvm.sh`, bun completion |
+| `~/.zshenv` | yes (synced) | **all** shells (incl. non-interactive & scripts) | Minimal always-on env. Points `SSH_AUTH_SOCK` at the Secretive Secure Enclave agent (guarded). Sources `~/.zshenv.local`. No PATH here — macOS `path_helper` reorders it on login shells. |
+| `~/.zshenv.local` | no (device-local) | all shells | Secrets/API keys that must reach non-interactive shells (scripts, Claude Code's Bash tool, LaunchAgents). |
+| `~/.zprofile` | no (device-local) | login shells | PATH-only env: `brew shellenv`, `pyenv init --path`, `PNPM_HOME`, `BUN_INSTALL`, `NVM_DIR`. |
+| `~/.zshrc` | yes (synced via `config` alias) | interactive shells | Cross-device aliases, completions, ssh-agent bootstrap (skipped when Secretive is active). Early-returns for non-interactive shells. Sources `~/.zshrc.local`. |
+| `~/.zshrc.local` | no (device-local) | interactive shells | Tokens + interactive init for device-specific tools: `pyenv init -`, `pyenv virtualenv-init -`, `nvm.sh`, bun completion. |
+
+```mermaid
+flowchart TD
+    subgraph tracked["Tracked / synced (public GitHub)"]
+        ZE["~/.zshenv<br/>all shells"]
+        ZR["~/.zshrc<br/>interactive"]
+    end
+    subgraph local["Device-local (gitignored)"]
+        ZEL["~/.zshenv.local<br/>secrets · all shells"]
+        ZRL["~/.zshrc.local<br/>secrets · interactive"]
+        ZP["~/.zprofile<br/>PATH · login"]
+    end
+    ZE -->|sources if present| ZEL
+    ZR -->|sources if present| ZRL
+```
 
 Why the split:
-- **Per-device vs synced.** Tools like pyenv/nvm/bun aren't installed on every machine, so their init can't sit in the tracked `~/.zshrc`.
-- **Login vs interactive.** `.zprofile` runs once per login shell; `.zshrc` runs for every interactive shell. PATH setup goes in `.zprofile`; shell functions, hooks, and completions go in `.zshrc`/`.zshrc.local`.
+- **Synced vs device-local.** Tracked files are portable and guarded so they no-op on machines missing a tool; `.local` files hold per-device secrets and paths and are gitignored, so the public repo never carries credentials.
+- **All shells vs interactive vs login.** Env that must reach *non-interactive* shells — scripts, Claude Code, git subprocesses, LaunchAgents — goes in `.zshenv` (sourced unconditionally). `.zprofile` runs once per login shell (PATH). `.zshrc` runs for interactive shells (aliases, completions) and early-returns otherwise.
 - **Why pyenv init is split.** `pyenv init --path` (PATH-only) is in `.zprofile`. The interactive `pyenv init -` and `pyenv virtualenv-init -` live in `.zshrc.local`. If the interactive hooks fire in non-interactive shells — e.g. tmux-resurrect restoring 20 sessions at reboot — they all race for the `~/.pyenv/shims/.pyenv-shim` rehash lock and one stale leftover blocks every future shell with `pyenv: cannot rehash`. Manual recovery: `rm ~/.pyenv/shims/.pyenv-shim`.
+- **SSH signing via Secure Enclave.** `.zshenv` sets `SSH_AUTH_SOCK` to [Secretive](https://github.com/maxgoedjen/secretive)'s agent (guarded — no-op without it), so commit signing and SSH auth use a non-exportable Secure Enclave key and no private key ever touches disk. `.zshrc`'s ssh-agent bootstrap loads the on-disk key only when Secretive isn't the active agent.
 
 ### Ghostty + tmux: Persistent Terminal Sessions
 

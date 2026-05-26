@@ -34,8 +34,13 @@ fi
 export PATH="$HOME/.local/bin:$PATH"
 
 
-if ! ssh-add -l | grep -q "id_ed25519"; then
-  ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+# Load the on-disk key into the agent only when not using Secretive's enclave
+# agent (which is enclave-only and rejects external keys). On Secretive machines
+# the enclave handles SSH auth and commit signing.
+if [[ "$SSH_AUTH_SOCK" != *Secretive* ]]; then
+  if ! ssh-add -l 2>/dev/null | grep -q "id_ed25519"; then
+    ssh-add --apple-use-keychain ~/.ssh/id_ed25519 2>/dev/null
+  fi
 fi
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=($HOME/.docker/completions $fpath)
@@ -50,6 +55,3 @@ compinit
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:$HOME/.lmstudio/bin"
-
-# Vite+ bin (https://viteplus.dev)
-. "$HOME/.vite-plus/env"
