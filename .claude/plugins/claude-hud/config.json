@@ -1,22 +1,13 @@
 {
-  "lineLayout": "expanded",
-  "showSeparators": false,
-  "pathLevels": 1,
   "display": {
-    "showModel": true,
-    "showContextBar": true,
     "showTools": true,
     "showAgents": true,
     "showTodos": true,
+    "showDuration": true,
     "showConfigCounts": true,
-    "showTokenBreakdown": true,
-    "showUsage": true,
-    "showDuration": true
+    "showSessionName": true
   },
-  "gitStatus": {
-    "enabled": true,
-    "showDirty": true,
-    "showAheadBehind": true,
-    "showFileStats": true
+  "colors": {
+    "label": "#a0a0a0"
   }
 }

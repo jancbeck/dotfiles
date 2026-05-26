@@ -21,12 +21,14 @@
       "Bash(git mv *)",
       "Bash(git restore *)",
       "Bash(git ls-tree *)",
+      "Bash(gh:*)",
       "Bash(config *)",
       "Bash(tree *)",
       "WebSearch",
       "mcp__plugin_context7_context7__resolve-library-id",
       "mcp__plugin_context7_context7__query-docs",
-      "mcp__ide__getDiagnostics"
+      "mcp__ide__getDiagnostics",
+      "mcp__pencil"
     ],
     "deny": [
       "Read(~/.ssh/**)",
@@ -41,9 +43,8 @@
       "Bash(git publish *)",
       "Bash(rm *)"
     ],
-    "defaultMode": "plan"
+    "defaultMode": "auto"
   },
-  "model": "opus",
   "hooks": {
     "Notification": [
       {
@@ -89,16 +90,24 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "bash -c '\"$HOME/.bun/bin/bun\" \"$(ls -td ~/.claude/plugins/cache/claude-hud/claude-hud/*/ 2>/dev/null | head -1)src/index.ts\"'"
+    "command": "bash -c 'cols=$(stty size </dev/tty 2>/dev/null | awk '\"'\"'{print $2}'\"'\"'); export COLUMNS=$(( ${cols:-120} > 4 ? ${cols:-120} - 4 : 1 )); plugin_dir=$(ls -d \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}\"/plugins/cache/*/claude-hud/*/ 2>/dev/null | awk -F/ '\"'\"'{ print $(NF-1) \"\\t\" $(0) }'\"'\"' | grep -E '\"'\"'^[0-9]+\\.[0-9]+\\.[0-9]+\\t'\"'\"' | sort -t. -k1,1n -k2,2n -k3,3n -k4,4n | tail -1 | cut -f2-); exec \"/Users/jb/.bun/bin/bun\" --env-file /dev/null \"${plugin_dir}src/index.ts\"'"
   },
   "enabledPlugins": {
-    "claude-hud@claude-hud": true,
     "commit-commands@claude-plugins-official": true,
     "document-skills@anthropic-agent-skills": false,
     "context7@claude-plugins-official": true,
     "feature-dev@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
-    "code-simplifier@claude-plugins-official": true
+    "code-simplifier@claude-plugins-official": true,
+    "claude-hud@claude-hud": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-hud": {
+      "source": {
+        "source": "github",
+        "repo": "jarrodwatts/claude-hud"
+      }
+    }
   },
   "sandbox": {
     "enabled": true,
@@ -129,6 +138,11 @@
       ]
     }
   },
+  "effortLevel": "xhigh",
   "autoUpdatesChannel": "latest",
+  "theme": "light",
+  "verbose": true,
+  "autoCompactEnabled": false,
+  "skipAutoPermissionPrompt": true,
   "voiceEnabled": true
 }

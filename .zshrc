@@ -1,3 +1,9 @@
+# Skip all this init for non-interactive shells, as Claude was
+# choking on this
+if [[ "${-}" != *i* ]]; then
+    return
+fi
+
 # Load local secrets (not tracked)
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
