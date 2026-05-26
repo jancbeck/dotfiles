@@ -14,7 +14,7 @@
     "allow": [
       "Skill(cfg)",
       "Bash(git add *)",
-      "Bash(git commit *)",
+      "Bash(git commit:*)",
       "Bash(git checkout *)",
       "Bash(git branch *)",
       "Bash(git fetch *)",
@@ -34,9 +34,9 @@
       "Read(~/.ssh/**)",
       "Edit(~/.ssh/**)",
       "Read(**/.env)",
-      "Read(**/.env.*)",
+      "Read(**/.env.production)",
       "Edit(**/.env)",
-      "Edit(**/.env.*)"
+      "Edit(**/.env.production)"
     ],
     "ask": [
       "Bash(git push *)",
@@ -116,7 +116,10 @@
         "api.github.com",
         "*.npmjs.org"
       ],
-      "allowLocalBinding": true
+      "allowLocalBinding": true,
+      "allowUnixSockets": [
+        "~/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh"
+      ]
     },
     "filesystem": {
       "allowWrite": [
@@ -126,12 +129,12 @@
       "denyWrite": [
         "~/.ssh",
         "**/.env",
-        "**/.env.*"
+        "**/.env.production"
       ],
       "denyRead": [
         "~/.ssh",
         "**/.env",
-        "**/.env.*"
+        "**/.env.production"
       ],
       "allowRead": [
         "~/.summarize"
