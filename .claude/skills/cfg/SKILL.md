@@ -35,11 +35,10 @@ If this fails with conflicts:
 - Continue with `config rebase --continue` or drop the stash if needed
 
 ### Step 2: Sync Lockfile Skills
-If `~/.agents/.skill-lock.json` changed in the pull (or to install any missing third-party skills), run:
+Run after every pull to ensure every third-party skill listed in `~/.agents/.skill-lock.json` is installed:
 ```bash
 npx skills add
 ```
-This installs every skill listed in the lockfile.
 
 ### Step 3: Check Status
 ```bash
@@ -50,19 +49,17 @@ Show the user:
 - How many commits ahead/behind of origin
 - Any modified files not yet staged
 
-### Step 3.5: Check for Untracked Files
+### Step 4: Check for Untracked Files
 Since `showUntrackedFiles` is disabled, manually check key directories for new files:
 ```bash
 config ls-files --others --exclude-standard ~/.claude/skills/
 ```
 
-For each untracked skill found:
-- If it appears in `~/.agents/.skill-lock.json` → skip (managed by lockfile, never commit).
-- Otherwise it's either a custom skill or computer-specific → **ask the user** whether to add it. Do not stage without confirmation.
+Each untracked path looks like `.claude/skills/<folder>/...`. Compare `<folder>` against the keys in `~/.agents/.skill-lock.json`:
+- Match → skip (managed by lockfile, never commit).
+- No match → custom or computer-specific. **Ask the user** whether to add it. Do not stage without confirmation.
 
-Ignore: `generate-image/`
-
-### Step 4: Show Diff
+### Step 5: Show Diff
 If there are unstaged changes:
 ```bash
 config diff
@@ -70,7 +67,7 @@ config diff
 
 Summarize what changed in each file concisely.
 
-### Step 5: Commit (if changes exist)
+### Step 6: Commit (if changes exist)
 If there are changes to commit:
 1. Stage all modified tracked files: `config add -u`
 2. Draft a concise commit message based on the diff
@@ -79,13 +76,13 @@ If there are changes to commit:
 config commit -m "<commit message>"
 ```
 
-### Step 6: Push
+### Step 7: Push
 If there are commits to push:
 ```bash
 config push
 ```
 
-### Step 7: Summary
+### Step 8: Summary
 Report final status:
 - Commits pushed (if any)
 - Current sync state with origin
