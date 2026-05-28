@@ -141,7 +141,6 @@ flowchart TD
 Why the split:
 - **Synced vs device-local.** Tracked files are portable and guarded so they no-op on machines missing a tool; `.local` files hold per-device secrets and paths and are gitignored, so the public repo never carries credentials.
 - **All shells vs interactive vs login.** Env that must reach *non-interactive* shells — scripts, Claude Code, git subprocesses, LaunchAgents — goes in `.zshenv` (sourced unconditionally). `.zprofile` runs once per login shell (PATH). `.zshrc` runs for interactive shells (aliases, completions) and early-returns otherwise.
-- **Why pyenv init is split.** `pyenv init --path` (PATH-only) is in `.zprofile`. The interactive `pyenv init -` and `pyenv virtualenv-init -` live in `.zshrc.local`. If the interactive hooks fire in non-interactive shells — e.g. tmux-resurrect restoring 20 sessions at reboot — they all race for the `~/.pyenv/shims/.pyenv-shim` rehash lock and one stale leftover blocks every future shell with `pyenv: cannot rehash`. Manual recovery: `rm ~/.pyenv/shims/.pyenv-shim`.
 - **SSH signing via Secure Enclave.** `.zshenv` sets `SSH_AUTH_SOCK` to [Secretive](https://github.com/maxgoedjen/secretive)'s agent (guarded — no-op without it), so commit signing and SSH auth use a non-exportable Secure Enclave key and no private key ever touches disk. `.zshrc`'s ssh-agent bootstrap loads the on-disk key only when Secretive isn't the active agent.
 
 ### Commit signing via Secure Enclave
@@ -178,35 +177,6 @@ flowchart LR
    ```
 5. *(Optional — enables local `git log --show-signature` verification)* create `~/.config/git/allowed_signers` with one line: `<your-git-email> <full contents of the .pub file>`.
 6. `SSH_AUTH_SOCK` is already exported by the tracked `~/.zshenv` (guarded), so signing works as soon as Secretive is running. Verify: `git log --show-signature -1` shows `Good "git" signature`.
-
-### Ghostty + tmux: Persistent Terminal Sessions
-
-Claude Code sessions survive Ghostty restarts and reboots via Ghostty + tmux + tmux-resurrect.
-
-**Files:**
-- `~/.config/ghostty/config` — keybindings and shell command
-- `~/.config/ghostty/persist.sh` — session attach/create logic run on every new tab
-- `~/.tmux.conf` — tmux config with plugin setup and Ghostty keybind targets
-
-**How it works:**
-- Every Ghostty tab runs `persist.sh` instead of a plain shell
-- `persist.sh` attaches to the next free named tmux session (`claude_1`..`claude_20`), or creates one
-- tmux-continuum auto-saves session layout every 15 min and auto-restores on tmux server start (after reboot)
-- Ghostty keybinds route through the tmux prefix (`Ctrl+B`) so they work even with Claude Code in the foreground
-
-**Keybindings:**
-
-| Key | Action |
-|-----|--------|
-| `Cmd+T` | New tab → attach to next free session |
-| `Cmd+W` | Kill current session and close tab |
-| `Cmd+S` | Manually save session layout |
-| `Cmd+Shift+T` | Manually restore saved sessions |
-
-**Fresh machine setup:**
-1. Clone dotfiles (see Installation above)
-2. Install Ghostty and Homebrew tmux: `brew install tmux`
-3. Start tmux once: `tmux` — TPM will auto-clone and install all plugins, then exit
 
 ## Credits
 
