@@ -9,24 +9,50 @@
       "skillFolderHash": "3013fdeb8a11b10b1eb795ec3ae8bfca38f7c26d",
       "installedAt": "2026-05-21T07:34:46.053Z",
       "updatedAt": "2026-05-28T17:13:12.199Z"
+    },
+    "caveman": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/mattpocock/skills.git",
+      "skillPath": "skills/productivity/caveman/SKILL.md",
+      "skillFolderHash": "17972a1bdbf5909b9dbdc435ad348f0bf45f8664",
+      "pluginName": "mattpocock-skills",
+      "installedAt": "2026-05-28T17:20:26.766Z",
+      "updatedAt": "2026-05-28T17:20:26.766Z"
+    },
+    "grill-me": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/mattpocock/skills.git",
+      "skillPath": "skills/productivity/grill-me/SKILL.md",
+      "skillFolderHash": "2a1ad17028306ebe45f0e49703fa28b9b2e7f499",
+      "pluginName": "mattpocock-skills",
+      "installedAt": "2026-05-28T17:20:26.792Z",
+      "updatedAt": "2026-05-28T17:20:26.792Z"
+    },
+    "ubiquitous-language": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/mattpocock/skills.git",
+      "skillPath": "skills/deprecated/ubiquitous-language/SKILL.md",
+      "skillFolderHash": "483fe10b01bed81b7eba7ee26df3f1bef9540c88",
+      "installedAt": "2026-05-28T17:20:26.809Z",
+      "updatedAt": "2026-05-28T17:20:26.809Z"
+    },
+    "playwright-cli": {
+      "source": "microsoft/playwright-cli",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/microsoft/playwright-cli.git",
+      "skillPath": "skills/playwright-cli/SKILL.md",
+      "skillFolderHash": "7f1be9aef5c4435ed99dc74a383ca814d05c82c5",
+      "installedAt": "2026-05-28T17:22:23.350Z",
+      "updatedAt": "2026-05-28T17:22:23.350Z"
     }
   },
   "dismissed": {
     "findSkillsPrompt": true
   },
   "lastSelectedAgents": [
-    "amp",
-    "antigravity",
-    "cline",
-    "codex",
-    "cursor",
-    "deepagents",
-    "dexto",
-    "firebender",
-    "gemini-cli",
-    "github-copilot",
-    "kimi-cli",
-    "opencode",
-    "warp"
+    "claude-code"
   ]
 }
