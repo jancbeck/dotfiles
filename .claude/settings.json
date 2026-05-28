@@ -134,7 +134,8 @@
       "denyRead": [
         "~/.ssh",
         "**/.env",
-        "**/.env.production"
+        "**/.env.production",
+        "~/.zshenv.local"
       ],
       "allowRead": [
         "~/.summarize"
