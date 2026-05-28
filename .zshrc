@@ -16,7 +16,6 @@ export LC_ALL=en_US.UTF-8
 export EDITOR='code'
 export CLICOLOR=YES
 
-alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias ll='ls -la --color'
 
 # homebrew
@@ -24,8 +23,6 @@ alias ll='ls -la --color'
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
 
-  autoload -Uz compinit
-  compinit
   export PATH=/usr/local/bin:$PATH
 fi
 
