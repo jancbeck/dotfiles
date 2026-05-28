@@ -116,10 +116,10 @@
         "api.github.com",
         "*.npmjs.org"
       ],
-      "allowLocalBinding": true,
       "allowUnixSockets": [
         "~/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh"
-      ]
+      ],
+      "allowLocalBinding": true
     },
     "filesystem": {
       "allowWrite": [
@@ -141,9 +141,9 @@
       ]
     }
   },
-  "effortLevel": "xhigh",
   "autoUpdatesChannel": "latest",
-  "theme": "light",
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "auto",
   "verbose": true,
   "autoCompactEnabled": false,
   "skipAutoPermissionPrompt": true,
