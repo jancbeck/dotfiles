@@ -28,9 +28,6 @@ fi
 
 # homebrew end
 
-export PATH="$HOME/.local/bin:$PATH"
-
-
 # Load the on-disk key into the agent only when not using Secretive's enclave
 # agent (which is enclave-only and rejects external keys). On Secretive machines
 # the enclave handles SSH auth and commit signing.
@@ -42,13 +39,16 @@ fi
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=($HOME/.docker/completions $fpath)
 autoload -Uz compinit
-compinit
+# Use the cached dump and skip the security audit when the dump already exists
+# (full audit + rebuild costs ~0.5s/launch). Rebuild fully once a day.
+if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
 # End of Docker CLI completions
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# bun completions
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:$HOME/.lmstudio/bin"
