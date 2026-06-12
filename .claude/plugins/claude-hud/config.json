@@ -1,11 +1,13 @@
 {
   "display": {
-    "showTools": true,
+    "showTools": false,
     "showAgents": true,
     "showTodos": true,
     "showDuration": true,
-    "showConfigCounts": true,
-    "showSessionName": true
+    "showConfigCounts": false,
+    "showSessionName": true,
+    "showTokenBreakdown": true,
+    "showSpeed": true
   },
   "colors": {
     "label": "#a0a0a0"

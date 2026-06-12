@@ -100,13 +100,21 @@
     "feature-dev@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
-    "claude-hud@claude-hud": true
+    "claude-hud@claude-hud": true,
+    "vercel@claude-plugins-official": true,
+    "vercel-plugin@vercel": true
   },
   "extraKnownMarketplaces": {
     "claude-hud": {
       "source": {
         "source": "github",
         "repo": "jarrodwatts/claude-hud"
+      }
+    },
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
       }
     }
   },
@@ -145,6 +153,7 @@
   },
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
+  "skipWorkflowUsageWarning": true,
   "theme": "auto",
   "verbose": true,
   "autoCompactEnabled": false,
