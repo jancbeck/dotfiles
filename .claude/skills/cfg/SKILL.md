@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Dotfiles Sync
 
-Manage dotfiles using the bare git repo technique with the `config` alias.
+Manage dotfiles using the bare git repo technique with the `config` alias. Always read [README](~/README.md).
 
 The `config` alias is defined as:
 ```
