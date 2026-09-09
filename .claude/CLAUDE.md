@@ -4,3 +4,4 @@
 - Prefer short, meaningful tests over comprehensive coverage. Tests should catch bugs and be easy to maintain when code changes. Focus on core behaviors and edge cases that matter.
 - Use mermaid for architecture diagrams
 - Don't write tombstone or change-narrating prose in any artifact — code comments, docs, READMEs, anywhere. Describe current state only; never "was X, now Y", never reference deleted code or the task/PR that produced the change. Git log and PR descriptions are the home for change context.
+- Gate every `acli` call on the tenant — it has one global active account and no per-command site override: `acli jira auth status | grep -q "Site: <expected>" && acli ...`. Different clients can share one site, so also check the work item key prefix matches the project. Expected site and key are in the project's CLAUDE.md. On mismatch, stop and ask; never `auth switch` unprompted.

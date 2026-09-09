@@ -48,3 +48,5 @@ Temporary Items
 *.sublime-workspace
 *.code-workspace
 **/.claude/settings.local.json
+
+**/.claude/.cc-writes/

@@ -30,14 +30,6 @@
       "mcp__ide__getDiagnostics",
       "mcp__pencil"
     ],
-    "deny": [
-      "Read(~/.ssh/**)",
-      "Edit(~/.ssh/**)",
-      "Read(**/.env)",
-      "Read(**/.env.production)",
-      "Edit(**/.env)",
-      "Edit(**/.env.production)"
-    ],
     "ask": [
       "Bash(git push *)",
       "Bash(git publish *)",
@@ -113,8 +105,8 @@
     },
     "claude-plugins-official": {
       "source": {
-        "source": "github",
-        "repo": "anthropics/claude-plugins-official"
+        "source": "git",
+        "url": "https://github.com/anthropics/claude-plugins-official.git"
       }
     }
   },
@@ -135,28 +127,20 @@
         "~/workspace",
         "//tmp/claude"
       ],
-      "denyWrite": [
-        "~/.ssh",
-        "**/.env",
-        "**/.env.production"
-      ],
-      "denyRead": [
-        "~/.ssh",
-        "**/.env",
-        "**/.env.production",
-        "~/.zshenv.local"
-      ],
       "allowRead": [
         "~/.summarize"
       ]
     }
   },
+  "effortLevel": "high",
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "theme": "auto",
   "verbose": true,
   "autoCompactEnabled": false,
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true
 }

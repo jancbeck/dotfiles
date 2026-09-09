@@ -47,12 +47,34 @@
       "skillFolderHash": "7f1be9aef5c4435ed99dc74a383ca814d05c82c5",
       "installedAt": "2026-05-28T17:22:23.350Z",
       "updatedAt": "2026-05-28T17:22:23.350Z"
+    },
+    "gpt-image-2": {
+      "source": "gargantuax/openskills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/gargantuax/openskills.git",
+      "skillPath": "skills/gpt-image-2/SKILL.md",
+      "skillFolderHash": "4a75d1a7370e6259eb30414cdc75cdffe75a37cb",
+      "installedAt": "2026-07-11T14:21:05.745Z",
+      "updatedAt": "2026-07-11T14:21:05.745Z"
     }
   },
   "dismissed": {
     "findSkillsPrompt": true
   },
   "lastSelectedAgents": [
+    "amp",
+    "antigravity",
+    "antigravity-cli",
+    "cline",
+    "codex",
+    "cursor",
+    "deepagents",
+    "gemini-cli",
+    "github-copilot",
+    "kimi-code-cli",
+    "opencode",
+    "warp",
+    "zed",
     "claude-code"
   ]
 }
