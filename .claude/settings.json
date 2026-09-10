@@ -109,6 +109,24 @@
         "source": "git",
         "url": "https://github.com/anthropics/claude-plugins-official.git"
       }
+    },
+    "anthropic-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/skills"
+      }
+    },
+    "vercel": {
+      "source": {
+        "source": "github",
+        "repo": "vercel/vercel-plugin"
+      }
+    },
+    "payload-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "payloadcms/payload"
+      }
     }
   },
   "sandbox": {
