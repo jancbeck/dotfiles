@@ -43,7 +43,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$HOME/.claude/scripts/say-notify || true"
+            "async": true,
+            "command": "jq -r '.message // empty' | say"
           }
         ]
       }
@@ -53,7 +54,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$HOME/.claude/scripts/say-notify || true"
+            "async": true,
+            "command": "jq -r '\"Permission needed for \" + (.tool_name // \"a tool\")' | say"
           }
         ]
       }
@@ -63,7 +65,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$HOME/.claude/scripts/say-notify || true"
+            "async": true,
+            "command": "say 'Task complete'"
           }
         ]
       }
@@ -75,17 +78,6 @@
           {
             "type": "command",
             "command": "~/.claude-code-docs/claude-docs-helper.sh hook-check"
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.claude/scripts/allow-repo-deletes",
-            "if": "Bash(rm *)",
-            "timeout": 10
           }
         ]
       }
