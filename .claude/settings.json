@@ -27,13 +27,11 @@
       "WebSearch",
       "mcp__plugin_context7_context7__resolve-library-id",
       "mcp__plugin_context7_context7__query-docs",
-      "mcp__ide__getDiagnostics",
-      "mcp__pencil"
+      "mcp__ide__getDiagnostics"
     ],
     "ask": [
       "Bash(git push *)",
-      "Bash(git publish *)",
-      "Bash(rm *)"
+      "Bash(git publish *)"
     ],
     "defaultMode": "auto"
   },
@@ -43,8 +41,8 @@
         "hooks": [
           {
             "type": "command",
-            "async": true,
-            "command": "jq -r '.message // empty' | say"
+            "command": "jq -r '.message // empty' | say",
+            "async": true
           }
         ]
       }
@@ -54,8 +52,8 @@
         "hooks": [
           {
             "type": "command",
-            "async": true,
-            "command": "jq -r '\"Permission needed for \" + (.tool_name // \"a tool\")' | say"
+            "command": "jq -r '\"Permission needed for \" + (.tool_name // \"a tool\")' | say",
+            "async": true
           }
         ]
       }
@@ -65,8 +63,8 @@
         "hooks": [
           {
             "type": "command",
-            "async": true,
-            "command": "say 'Task complete'"
+            "command": "say 'Task complete'",
+            "async": true
           }
         ]
       }
@@ -142,7 +140,7 @@
   "skipWorkflowUsageWarning": true,
   "theme": "auto",
   "verbose": true,
-  "autoCompactEnabled": false,
+  "autoCompactEnabled": true,
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
