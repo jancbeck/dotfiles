@@ -1,0 +1,11 @@
+{
+  "restart": [
+    "SystemUIServer"
+  ],
+  "defaults": {
+    "com.apple.screencapture": {
+      "location": "~/Downloads",
+      "type": "png"
+    }
+  }
+}
