@@ -37,7 +37,7 @@ If this fails with conflicts:
 ### Step 2: Sync Lockfile Skills
 Run after every pull to ensure every third-party skill listed in `~/.agents/.skill-lock.json` is installed:
 ```bash
-npx skills add
+npx skills experimental_install
 ```
 
 ### Step 3: Check Status
