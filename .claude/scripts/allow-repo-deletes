@@ -1,0 +1,91 @@
+#!/usr/bin/python3
+"""Auto-approve `rm` when every target sits inside a git work tree.
+
+A file tracked in a repository is recoverable, so deleting one needs no
+confirmation. Anything else — system paths, the home directory, a repo root, a
+.git directory — falls through to the normal permission prompt.
+
+$HOME is not a work tree here: the dotfiles repo is bare at ~/.cfg and is not
+discoverable by walking up for .git, so deletions in the home directory prompt.
+"""
+
+import json
+import os
+import shlex
+import subprocess
+import sys
+
+ASK = {"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "ask"}}
+
+
+def emit(decision, reason=""):
+    if decision == "allow":
+        out = {
+            "hookSpecificOutput": {
+                "hookEventName": "PreToolUse",
+                "permissionDecision": "allow",
+                "permissionDecisionReason": reason,
+            }
+        }
+    else:
+        out = ASK
+    print(json.dumps(out))
+    sys.exit(0)
+
+
+def rm_targets(command):
+    """Paths a single `rm` invocation would remove, or None if not parseable."""
+    try:
+        words = shlex.split(command)
+    except ValueError:
+        return None
+    if not words or os.path.basename(words[0]) != "rm":
+        return None
+    targets = [w for w in words[1:] if not w.startswith("-")]
+    return targets or None
+
+
+def toplevel(path):
+    probe = path if os.path.isdir(path) else os.path.dirname(path) or "."
+    while probe != os.sep and not os.path.isdir(probe):
+        probe = os.path.dirname(probe) or os.sep
+    try:
+        out = subprocess.run(
+            ["git", "-C", probe, "rev-parse", "--show-toplevel"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return None
+    return out.stdout.strip() if out.returncode == 0 else None
+
+
+def main():
+    try:
+        payload = json.load(sys.stdin)
+    except (json.JSONDecodeError, ValueError):
+        emit("ask")
+
+    command = payload.get("tool_input", {}).get("command", "")
+    cwd = payload.get("cwd") or os.getcwd()
+
+    targets = rm_targets(command)
+    if not targets:
+        emit("ask")
+
+    roots = set()
+    for target in targets:
+        path = os.path.abspath(os.path.join(cwd, os.path.expanduser(target)))
+        if ".git" in path.split(os.sep):
+            emit("ask")
+        root = toplevel(path)
+        if root is None or os.path.realpath(path) == os.path.realpath(root):
+            emit("ask")
+        roots.add(root)
+
+    emit("allow", f"target(s) inside git work tree: {', '.join(sorted(roots))}")
+
+
+if __name__ == "__main__":
+    main()
