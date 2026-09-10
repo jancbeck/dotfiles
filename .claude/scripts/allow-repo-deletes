@@ -1,34 +1,26 @@
 #!/usr/bin/python3
-"""Auto-approve `rm` when every target sits inside a git work tree.
+"""Auto-approve `rm` when every target sits inside ~/workspace.
 
-A file tracked in a repository is recoverable, so deleting one needs no
-confirmation. Anything else — system paths, the home directory, a repo root, a
-.git directory — falls through to the normal permission prompt.
+Projects live there under version control, so deleting a file needs no
+confirmation. Everything else — the home directory, dotfiles, system paths —
+falls through to the normal permission prompt.
 
-$HOME is not a work tree here: the dotfiles repo is bare at ~/.cfg and is not
-discoverable by walking up for .git, so deletions in the home directory prompt.
+A .git directory is excluded: removing one discards history that no commit can
+bring back.
 """
 
 import json
 import os
 import shlex
-import subprocess
 import sys
 
-ASK = {"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "ask"}}
+WORKSPACE = os.path.realpath(os.path.expanduser("~/workspace"))
 
 
 def emit(decision, reason=""):
-    if decision == "allow":
-        out = {
-            "hookSpecificOutput": {
-                "hookEventName": "PreToolUse",
-                "permissionDecision": "allow",
-                "permissionDecisionReason": reason,
-            }
-        }
-    else:
-        out = ASK
+    out = {"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": decision}}
+    if reason:
+        out["hookSpecificOutput"]["permissionDecisionReason"] = reason
     print(json.dumps(out))
     sys.exit(0)
 
@@ -45,20 +37,9 @@ def rm_targets(command):
     return targets or None
 
 
-def toplevel(path):
-    probe = path if os.path.isdir(path) else os.path.dirname(path) or "."
-    while probe != os.sep and not os.path.isdir(probe):
-        probe = os.path.dirname(probe) or os.sep
-    try:
-        out = subprocess.run(
-            ["git", "-C", probe, "rev-parse", "--show-toplevel"],
-            capture_output=True,
-            text=True,
-            timeout=5,
-        )
-    except (OSError, subprocess.SubprocessError):
-        return None
-    return out.stdout.strip() if out.returncode == 0 else None
+def inside_workspace(path):
+    real = os.path.realpath(path)
+    return real == WORKSPACE or real.startswith(WORKSPACE + os.sep)
 
 
 def main():
@@ -74,17 +55,14 @@ def main():
     if not targets:
         emit("ask")
 
-    roots = set()
     for target in targets:
         path = os.path.abspath(os.path.join(cwd, os.path.expanduser(target)))
         if ".git" in path.split(os.sep):
             emit("ask")
-        root = toplevel(path)
-        if root is None or os.path.realpath(path) == os.path.realpath(root):
+        if not inside_workspace(path):
             emit("ask")
-        roots.add(root)
 
-    emit("allow", f"target(s) inside git work tree: {', '.join(sorted(roots))}")
+    emit("allow", "target(s) inside ~/workspace")
 
 
 if __name__ == "__main__":
