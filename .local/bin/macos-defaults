@@ -3,9 +3,13 @@
 
 Uses Apple's system python3 so the script works on a machine with no Homebrew.
 
-  macos-defaults diff             show desired vs live values
-  macos-defaults apply           write every desired value
-  macos-defaults add DOMAIN KEY  record the live value into the JSON file
+  macos-defaults diff                    show desired vs live values
+  macos-defaults apply                  write every desired value
+  macos-defaults set DOMAIN KEY VALUE   write one value and record it
+  macos-defaults add DOMAIN KEY         record a value already set on this machine
+
+The JSON file is the source of truth. A bare `defaults write` does not reach it,
+so use `set` to change a preference, or `add` to adopt one changed elsewhere.
 """
 
 import json
@@ -98,6 +102,32 @@ def cmd_apply(cfg):
     return 0
 
 
+def parse(text):
+    """Turn a command-line value into a typed Python value."""
+    if text in ("true", "false"):
+        return text == "true"
+    for cast in (int, float):
+        try:
+            return cast(text)
+        except ValueError:
+            pass
+    home = os.path.expanduser("~")
+    if text.startswith(home):
+        return "~" + text[len(home):]
+    return text
+
+
+def cmd_set(cfg, domain, key, text):
+    value = parse(text)
+    write_value(domain, key, expand(value))
+    cfg["defaults"].setdefault(domain, {})[key] = value
+    save(cfg)
+    print(f"set and recorded {domain} {key} = {json.dumps(value)}")
+    for proc in cfg.get("restart", []):
+        subprocess.run(["killall", proc], stderr=subprocess.DEVNULL)
+    return 0
+
+
 def cmd_add(cfg, domain, key):
     live = read_live(domain, key)
     if live is None:
@@ -130,6 +160,11 @@ def main():
         return cmd_diff(cfg)
     if command == "apply":
         return cmd_apply(cfg)
+    if command == "set":
+        if len(args) != 4:
+            print("usage: macos-defaults set DOMAIN KEY VALUE", file=sys.stderr)
+            return 2
+        return cmd_set(cfg, args[1], args[2], args[3])
     if command == "add":
         if len(args) != 3:
             print("usage: macos-defaults add DOMAIN KEY", file=sys.stderr)
