@@ -5,6 +5,3 @@
 
 # Device-local git config (per-machine signing key path)
 .gitconfig.local
-
-# Machine-local Claude rules (client/tenant mappings)
-.claude/rules/acli-tenants.md

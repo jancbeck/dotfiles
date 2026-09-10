@@ -50,3 +50,6 @@ Temporary Items
 **/.claude/settings.local.json
 
 **/.claude/.cc-writes/
+
+# Personal per-project instructions, never shared
+CLAUDE.local.md
