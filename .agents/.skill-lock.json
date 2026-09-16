@@ -25,10 +25,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/mattpocock/skills.git",
       "skillPath": "skills/productivity/grill-me/SKILL.md",
-      "skillFolderHash": "2a1ad17028306ebe45f0e49703fa28b9b2e7f499",
+      "skillFolderHash": "3df14e2d3a89459bf300614be9247e3ce74798f8",
       "pluginName": "mattpocock-skills",
       "installedAt": "2026-05-28T17:20:26.792Z",
-      "updatedAt": "2026-05-28T17:20:26.792Z"
+      "updatedAt": "2026-09-16T19:36:48.527Z"
     },
     "ubiquitous-language": {
       "source": "mattpocock/skills",
@@ -44,9 +44,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/microsoft/playwright-cli.git",
       "skillPath": "skills/playwright-cli/SKILL.md",
-      "skillFolderHash": "7f1be9aef5c4435ed99dc74a383ca814d05c82c5",
+      "skillFolderHash": "10104bd92881e5ca5688f0a2cd1372e3c0e413a9",
       "installedAt": "2026-05-28T17:22:23.350Z",
-      "updatedAt": "2026-05-28T17:22:23.350Z"
+      "updatedAt": "2026-09-16T19:37:00.602Z"
     },
     "gpt-image-2": {
       "source": "gargantuax/openskills",
@@ -56,6 +56,15 @@
       "skillFolderHash": "4a75d1a7370e6259eb30414cdc75cdffe75a37cb",
       "installedAt": "2026-07-11T14:21:05.745Z",
       "updatedAt": "2026-07-11T14:21:05.745Z"
+    },
+    "prompt-videos": {
+      "source": "replicate/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/replicate/skills.git",
+      "skillPath": "skills/prompt-videos/SKILL.md",
+      "skillFolderHash": "20b8a9239743ae7be8447ae8a0ee5ad682a5c108",
+      "installedAt": "2026-07-13T18:52:33.337Z",
+      "updatedAt": "2026-07-13T18:52:33.337Z"
     }
   },
   "dismissed": {
