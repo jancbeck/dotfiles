@@ -48,15 +48,6 @@
       "installedAt": "2026-05-28T17:22:23.350Z",
       "updatedAt": "2026-09-16T19:37:00.602Z"
     },
-    "gpt-image-2": {
-      "source": "gargantuax/openskills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/gargantuax/openskills.git",
-      "skillPath": "skills/gpt-image-2/SKILL.md",
-      "skillFolderHash": "4a75d1a7370e6259eb30414cdc75cdffe75a37cb",
-      "installedAt": "2026-07-11T14:21:05.745Z",
-      "updatedAt": "2026-07-11T14:21:05.745Z"
-    },
     "prompt-videos": {
       "source": "replicate/skills",
       "sourceType": "github",
