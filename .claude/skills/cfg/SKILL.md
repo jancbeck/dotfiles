@@ -17,7 +17,7 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 Skills under `~/.claude/skills/` fall into three categories:
 
-- **Third-party skills** — tracked in the `npx skills` lockfile at `~/.agents/.skill-lock.json` (committed to dotfiles). Installed/updated via `npx skills add` from the lockfile. Their skill folders themselves are **not** committed to the dotfiles repo.
+- **Third-party skills** — tracked in the `npx skills` lockfile at `~/.agents/.skill-lock.json` (committed to dotfiles). Installed via `npx skills add` (see Step 2) and updated via `npx skills update -g`. Their skill folders themselves are **not** committed to the dotfiles repo.
 - **Custom skills** — written by the user, committed to the dotfiles repo. Before staging a new custom skill, **ask the user** to confirm they want it tracked.
 - **Computer-specific skills** — left untracked, never committed.
 
@@ -35,10 +35,16 @@ If this fails with conflicts:
 - Continue with `config rebase --continue` or drop the stash if needed
 
 ### Step 2: Sync Lockfile Skills
-Run after every pull to ensure every third-party skill listed in `~/.agents/.skill-lock.json` is installed:
+Run after every pull to install any third-party skill listed in `~/.agents/.skill-lock.json` that is missing locally. The `skills` CLI has no restore command for the global lockfile (`experimental_install` only reads a project's `skills-lock.json`), so install each missing entry by name:
 ```bash
-npx skills experimental_install
+jq -r '.skills | to_entries[] | "\(.value.source) \(.key)"' ~/.agents/.skill-lock.json |
+while read -r src name; do
+  [ -e ~/.claude/skills/$name ] || [ -e ~/.agents/skills/$name ] ||
+    npx -y skills add "$src" -g -y -a claude-code --skill "$name" 2>&1 | tail -3
+done
 ```
+
+If a skill fails to install because it no longer exists upstream, tell the user and offer to remove its entry from the lockfile.
 
 ### Step 3: Check Status
 ```bash
