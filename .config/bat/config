@@ -1,0 +1,12 @@
+# Themes. bat ships only the dark half of the Visual Studio pair, so the light
+# one is the local theme in themes/, registered with `bat cache --build`.
+#
+# auto:system reads the macOS appearance setting. The default, plain auto,
+# instead queries the terminal for its background color, and when that query
+# gets no answer -- under `script`, in a pipeline, in a terminal that ignores
+# it -- bat drops both themes below and falls back to its compiled-in Monokai
+# Extended, whose off-white foreground is unreadable on a light background.
+# Ghostty follows the system appearance too, so the two always agree.
+--theme=auto:system
+--theme-light="Visual Studio Light+"
+--theme-dark="Visual Studio Dark+"

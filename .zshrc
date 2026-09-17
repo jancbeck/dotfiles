@@ -62,6 +62,29 @@ export PATH="$PATH:$HOME/.lmstudio/bin"
 export LSCOLORS='ExGxFxdxCxDxDxhbadExEx'
 export LS_COLORS='di=1;34:ln=1;35:so=1;32:pi=33:ex=1;31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=1;34:ow=1;34'
 
+# Syntax-highlighted file output. `cat` keeps its plain, pager-less shape and
+# only gains colors (-pp); plain `bat` adds line numbers, a header and a pager.
+# Theme selection lives in ~/.config/bat/config. Man pages render through
+# bat too.
+if (( $+commands[bat] )); then
+  alias cat='bat -pp'
+  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+  export MANROFFOPT='-c'
+fi
+
+# grc colorizes commands that have no --color flag of their own. Only read-only
+# diagnostic commands are wrapped: grc runs the command behind a pipe and a
+# Python process, which breaks interactive sessions (docker/kubectl -it, env
+# <cmd>), fights LSCOLORS on ls, and would slow build tools. Its stock
+# grc.zsh wraps all of those, so it is not sourced.
+if (( $+commands[grc] )) && [[ -t 1 && $TERM != dumb ]]; then
+  for _cmd in df du diff dig id ifconfig last lsof mount netstat ping ps stat traceroute uptime whois; do
+    (( $+commands[$_cmd] )) && $_cmd() { grc --colour=auto ${commands[$0]} "$@" }
+  done
+  unset _cmd
+fi
+alias grep='grep --color=auto'
+
 # Prompt: current dir, git branch with dirty/staged markers, and a prompt char
 # that turns red on a non-zero exit.
 #
