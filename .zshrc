@@ -50,7 +50,12 @@ else
 fi
 # End of Docker CLI completions
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# fzf key bindings and completion. `fzf --zsh` is the current integration and
+# replaces the generated ~/.fzf.zsh that older installs used to source.
+#   Ctrl-R  fuzzy search shell history
+#   Ctrl-T  fuzzy pick a file path into the command line
+#   Alt-C   fuzzy cd into a subdirectory of the current one
+(( $+commands[fzf] )) && source <(fzf --zsh)
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:$HOME/.lmstudio/bin"
@@ -84,6 +89,21 @@ if (( $+commands[grc] )) && [[ -t 1 && $TERM != dumb ]]; then
   unset _cmd
 fi
 alias grep='grep --color=auto'
+
+# eza for ls. Reads LS_COLORS above, so the palette is shared with the system
+# ls that stays reachable as `command ls`. No icons: they need a patched font.
+if (( $+commands[eza] )); then
+  alias ls='eza --group-directories-first'
+  alias ll='eza --long --all --git --group-directories-first --time-style=long-iso'
+  alias lt='eza --tree --level=2 --group-directories-first'
+fi
+
+# zoxide learns the directories visited and jumps to them from anywhere:
+# `z veg` lands in ~/workspace/projects/veg-cloud-sai. `zi` picks from the
+# matches in fzf when several fit. cd itself is left alone.
+(( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
+
+(( $+commands[micro] )) && alias nano='micro'
 
 # Prompt: current dir, git branch with dirty/staged markers, and a prompt char
 # that turns red on a non-zero exit.

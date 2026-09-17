@@ -5,3 +5,6 @@
 
 # Device-local git config (per-machine signing key path)
 .gitconfig.local
+
+# Written by `brew bundle install`; the Brewfile itself is the manifest
+Brewfile.lock.json

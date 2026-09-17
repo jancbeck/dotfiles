@@ -11,6 +11,9 @@
 	autocrlf = input
 # Show non-ASCII characters in filenames properly
 	quotepath = false
+# Syntax-highlighted diffs in the terminal. delta is a pager, so it applies to
+# diff, show, log -p and stash show without wrapping any command.
+	pager = delta
 
 [color]
 # Enables color highlighting for branch, status, diff and other commands
@@ -43,6 +46,21 @@
 [difftool "vscode"]
 # Launches VS Code in diff mode to compare local and remote versions
 	cmd = "code --wait --diff  "
+
+[interactive]
+# Route `git add -p` hunks through delta as well
+	diffFilter = delta --color-only
+
+[delta]
+# delta reads bat's theme assets, so this is the same local theme bat uses.
+# Both keys move together when switching to a dark terminal: dark = true and
+# the Visual Studio Dark+ theme.
+	syntax-theme = Visual Studio Light+
+	light = true
+# Line numbers instead of +/- columns
+	line-numbers = true
+# n and N jump between files in the pager
+	navigate = true
 
 [rerere]
 # Records and reuses conflict resolutions, saving time on repetitive merges

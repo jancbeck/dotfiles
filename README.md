@@ -75,6 +75,44 @@ config push
 
 ## System Setup
 
+### Packages
+
+`~/Brewfile` is the manifest of everything installed through Homebrew, and it
+is what makes the shell config's guarded tool blocks resolve on a new machine.
+It lists only top-level installs, so dependencies are left implicit.
+
+```bash
+brew bundle install          # install everything in the Brewfile
+brew bundle check --verbose  # report what is missing
+brew bundle dump --force --no-vscode   # regenerate after installing something
+```
+
+Regenerate it after any `brew install`, since nothing does that automatically.
+Dropping `--no-vscode` also records VS Code extensions, at the cost of a file
+that churns whenever an extension changes.
+
+`brew bundle cleanup` lists formulae that are installed but absent from the
+Brewfile; it removes them only with `--force`.
+
+Homebrew does not cover everything: Secretive is installed from its GitHub
+releases, the workspace disk image is built by hand, and system preferences
+are `defaults write` calls. Those are the sections below.
+
+Every command-line tool the shell files reference is in the Brewfile, and each
+is behind a `(( $+commands[...] ))` guard so a machine missing one still gets a
+working shell:
+
+| Tool | Stands in for | Wired up in |
+|------|---------------|-------------|
+| `bat` | `cat`, and the man pager | `.zshrc`, `.config/bat/config` |
+| `eza` | `ls`, `ll`, `lt` | `.zshrc` |
+| `micro` | `nano` | `.zshrc` |
+| `zoxide` | adds `z` and `zi` next to `cd` | `.zshrc` |
+| `fzf` | Ctrl-R, Ctrl-T, Alt-C, and `zi`'s picker | `.zshrc` |
+| `grc` | colors read-only diagnostic commands | `.zshrc` |
+| `git-delta` | the pager for `git diff`, `show`, `log -p` | `.gitconfig` |
+| `zsh-autosuggestions`, `zsh-syntax-highlighting` | line editor niceties | `.zshrc` |
+
 ### Workspace
 
 Use a case-sensitive disk image to avoid having to reformat a case-unsensitive system:
