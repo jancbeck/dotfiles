@@ -117,19 +117,27 @@ Homebrew; the rest keep their own updaters. So the Brewfile is what
 puts the applications on a new machine, and it does not take over their
 updates.
 
-A Brewfile is evaluated as Ruby, so anything that should not be public, or only
-belongs on one machine (work cloud CLIs, one-off project tools), can live in a
-gitignored `~/Brewfile.local` pulled in at the end of the tracked one:
+App Store apps appear as `mas` entries, and only when no cask exists. `mas`
+installs what the signed-in Apple ID already owns; it cannot buy an app.
 
-```ruby
-local = File.expand_path("Brewfile.local", __dir__)
-instance_eval(File.read(local)) if File.exist?(local)
-```
+A Brewfile is evaluated as Ruby, so the tracked one ends by loading more files:
 
-`brew bundle install` and `list` then cover both files. `dump` does not: it
-rewrites the Brewfile from what is installed, which drops that snippet and
-writes the private entries into the public file. After a dump, move those lines
-back and re-append the include.
+| File | Tracked? | Holds |
+|------|----------|-------|
+| `~/Brewfile` | yes | Everything both machines use |
+| `~/Brewfile.work` | yes | Work-only tools: cloud CLIs, Terraform, Zoom |
+| `~/Brewfile.personal` | yes | Personal-only apps and tools |
+| `~/Brewfile.local` | no | Optional entries for this one machine |
+
+`HOMEBREW_DOTFILES_PROFILE` picks the profile file. It is set to `work` or
+`personal` in `~/.zshenv.local`, and `brew bundle` stops with an error when it is
+missing. The `HOMEBREW_` prefix is required: `brew` drops other environment
+variables before it reads a Brewfile.
+
+`brew bundle install` and `list` cover all of these files. `dump` does not: it
+rewrites the Brewfile from what is installed, which drops the loader at the end
+and writes the profile entries into the shared file. After a dump, move those
+lines back and restore the loader.
 
 Homebrew does not cover everything: the workspace disk image is built by hand,
 Touch ID for `sudo` is a PAM file, and system preferences are `defaults write`
@@ -269,8 +277,9 @@ fi
 ```
 
 ```bash
-# ~/.zshenv.local — secrets that must reach non-interactive shells
+# ~/.zshenv.local — secrets and settings that must reach non-interactive shells
 export SOME_API_TOKEN="..."
+export HOMEBREW_DOTFILES_PROFILE=personal   # or work; see Packages
 ```
 
 Installers routinely append to `~/.zshrc` instead, which is tracked and shared —

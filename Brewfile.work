@@ -1,0 +1,16 @@
+# Work machine, loaded by ~/Brewfile when HOMEBREW_DOTFILES_PROFILE=work
+tap "atlassian/acli", trusted: true
+tap "hashicorp/tap"
+# Official Amazon AWS command-line interface
+brew "awscli"
+# Microsoft Azure CLI 2.0
+brew "azure-cli"
+# Software to interact with Atlassian Cloud from the terminal
+brew "atlassian/acli/acli"
+# Terraform
+brew "hashicorp/tap/terraform", trusted: true
+# Plugin for AWS CLI to start and end sessions that connect to managed instances
+cask "session-manager-plugin"
+cask "pgadmin4"
+cask "zoom"
+go "github.com/okta/okta-cli-client"

@@ -1,0 +1,22 @@
+# Personal machine, loaded by ~/Brewfile when HOMEBREW_DOTFILES_PROFILE=personal
+tap "finnvoor/tools"
+tap "runpod/runpodctl"
+# Postgres client (psql); .zprofile puts its bin on PATH
+brew "libpq"
+# OCR engine
+brew "tesseract"
+brew "finnvoor/tools/fx-upscale", trusted: true
+brew "runpod/runpodctl/runpodctl", trusted: true
+cask "basictex"
+cask "sequel-ace"
+cask "shapr3d"
+cask "telegram"
+cask "whatsapp"
+mas "AdGuard for Safari", id: 1440147259
+mas "Byword", id: 420212497
+mas "DaVinci Resolve", id: 571213070
+mas "FreeScaler", id: 6443796196
+mas "GeoGebra Graphing Calculator", id: 1294018688
+mas "iMovie", id: 408981434
+mas "Save to Reader", id: 1640236961
+mas "Upscal Studio", id: 1487928043
