@@ -137,7 +137,8 @@
       "allowedDomains": [
         "github.com",
         "api.github.com",
-        "*.npmjs.org"
+        "*.npmjs.org",
+        "*.atlassian.net"
       ],
       "allowUnixSockets": [
         "~/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh"
