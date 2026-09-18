@@ -1,5 +1,4 @@
 {
-    "_comment": "nano's keys, so muscle memory carries over. micro's own defaults stay bound as well: CtrlS saves and CtrlQ quits.",
     "CtrlX": "Quit",
     "CtrlO": "Save",
     "CtrlW": "Find",
