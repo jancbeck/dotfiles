@@ -56,7 +56,7 @@ cask "secretive"
 cask "session-manager-plugin"
 # Editors, terminals and dev tools
 cask "claude"
-cask "docker"
+cask "docker-desktop"
 cask "ghostty"
 cask "iterm2"
 cask "lm-studio"
