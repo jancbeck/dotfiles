@@ -77,7 +77,7 @@ cask "maccy"
 cask "rectangle"
 cask "spokenly"
 cask "syntax-highlight"
-cask "tailscale"
+cask "tailscale-app"
 cask "the-unarchiver"
 cask "upscayl"
 # Media and communication
