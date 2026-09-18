@@ -1,0 +1,8 @@
+{
+    "keymenu": true,
+    "mkparents": true,
+    "savecursor": true,
+    "scrollbar": true,
+    "tabsize": 2,
+    "tabstospaces": true
+}

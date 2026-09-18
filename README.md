@@ -84,15 +84,38 @@ It lists only top-level installs, so dependencies are left implicit.
 ```bash
 brew bundle install          # install everything in the Brewfile
 brew bundle check --verbose  # report what is missing
-brew bundle dump --force --no-vscode   # regenerate after installing something
 ```
 
-Regenerate it after any `brew install`, since nothing does that automatically.
-Dropping `--no-vscode` also records VS Code extensions, at the cost of a file
-that churns whenever an extension changes.
+The file is maintained by hand. Most of the casks name applications that were
+installed by dragging them to `/Applications`, so Homebrew has no receipt for
+them and `brew bundle dump` would drop every one. Use a dump to find drift
+rather than to regenerate:
+
+```bash
+brew bundle dump --no-vscode --file=/tmp/Brewfile.now
+diff /tmp/Brewfile.now ~/Brewfile
+```
+
+Adding `--no-vscode` to a dump keeps VS Code extensions out; they churn
+whenever an extension updates, and Settings Sync already carries them.
+
+`brew bundle check` reports the untracked applications as missing, because it
+asks Homebrew rather than looking in `/Applications`. Running
+`brew install --cask --adopt <token>` hands an existing app to Homebrew, but
+only adopts in place when the installed version matches the cask exactly;
+otherwise it replaces the app with the cask's version.
 
 `brew bundle cleanup` lists formulae that are installed but absent from the
 Brewfile; it removes them only with `--force`.
+
+A cask is a GUI application rather than a command-line package, and here it is
+a provisioning record first and an update channel second. Homebrew marks any
+cask whose app updates itself as `auto_updates`, and `brew upgrade` then leaves
+it alone unless called with `--greedy`. Of the casks listed here only
+`secretive`, `session-manager-plugin`, `pgadmin4` and `devcleaner` are actually
+upgraded by Homebrew; the rest keep their own updaters. So the Brewfile is what
+puts the applications on a new machine, and it does not take over their
+updates.
 
 A Brewfile is evaluated as Ruby, so anything that should not be public can live
 in a gitignored `~/Brewfile.local` pulled in at the end of the tracked one:
@@ -129,7 +152,7 @@ working shell:
 |------|---------------|-------------|
 | `bat` | `cat`, and the man pager | `.zshrc`, `.config/bat/config` |
 | `eza` | `ls`, `ll`, `lt` | `.zshrc` |
-| `micro` | `nano` | `.zshrc`, `.config/micro/bindings.json` |
+| `micro` | `nano` | `.zshrc`, `.config/micro/settings.json` |
 | `zoxide` | adds `z` and `zi` next to `cd` | `.zshrc` |
 | `fzf` | Ctrl-R, Ctrl-T, Alt-C, and `zi`'s picker | `.zshrc` |
 | `grc` | colors read-only diagnostic commands | `.zshrc` |
@@ -464,6 +487,18 @@ tmutil addexclusion -p <path>     # -p makes it stick to the path, not the inode
 `~/workspace` is excluded, since it is a mount point for the disk image.
 `~/workspace.dmg.sparsebundle` is **not** excluded, so the projects inside it
 are backed up through the bundle itself rather than through the mount.
+
+### micro
+
+`keymenu` keeps nano's two rows of shortcuts pinned to the bottom of the
+window, which is the only reason nano never needed learning. The menu is
+generated from micro's own defaults and ignores `bindings.json`, so the
+keybindings are left stock: a remapped key would make the menu lie.
+
+`Alt-g` toggles the menu, and `Alt` bindings need the terminal to send Option
+as Meta. In Ghostty that is `macos-option-as-alt`; `left` keeps the right
+Option key free for typing `@` and `€` on an Austrian layout. The same setting
+is what makes fzf's `Alt-C` work.
 
 ### Menu bar and pointer
 
