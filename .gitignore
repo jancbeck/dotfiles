@@ -8,3 +8,6 @@
 
 # Written by `brew bundle install`; the Brewfile itself is the manifest
 Brewfile.lock.json
+
+# Private Homebrew entries, included by the tracked Brewfile when present
+Brewfile.local

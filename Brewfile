@@ -46,6 +46,8 @@ brew "zsh-syntax-highlighting"
 brew "atlassian/acli/acli"
 # Terraform
 brew "hashicorp/tap/terraform", trusted: true
+# Customise mouse behavior
+cask "linearmouse"
 # Quick Look generator for Markdown files
 cask "qlmarkdown"
 # Store SSH keys in the Secure Enclave

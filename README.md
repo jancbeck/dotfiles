@@ -94,6 +94,19 @@ that churns whenever an extension changes.
 `brew bundle cleanup` lists formulae that are installed but absent from the
 Brewfile; it removes them only with `--force`.
 
+A Brewfile is evaluated as Ruby, so anything that should not be public can live
+in a gitignored `~/Brewfile.local` pulled in at the end of the tracked one:
+
+```ruby
+local = File.expand_path("Brewfile.local", __dir__)
+instance_eval(File.read(local)) if File.exist?(local)
+```
+
+`brew bundle install` and `list` then cover both files. `dump` does not: it
+rewrites the Brewfile from what is installed, which drops that snippet and
+writes the private entries into the public file. After a dump, move those lines
+back and re-append the include.
+
 Homebrew does not cover everything: the workspace disk image is built by hand,
 Touch ID for `sudo` is a PAM file, and system preferences are `defaults write`
 calls. Those are the sections below.
@@ -116,7 +129,7 @@ working shell:
 |------|---------------|-------------|
 | `bat` | `cat`, and the man pager | `.zshrc`, `.config/bat/config` |
 | `eza` | `ls`, `ll`, `lt` | `.zshrc` |
-| `micro` | `nano` | `.zshrc` |
+| `micro` | `nano` | `.zshrc`, `.config/micro/bindings.json` |
 | `zoxide` | adds `z` and `zi` next to `cd` | `.zshrc` |
 | `fzf` | Ctrl-R, Ctrl-T, Alt-C, and `zi`'s picker | `.zshrc` |
 | `grc` | colors read-only diagnostic commands | `.zshrc` |
@@ -361,10 +374,31 @@ defaults write com.apple.finder ProhibitBurn -bool true        # drop Burn Disc
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
-# Dock — stop reordering Spaces by recency, which makes keyboard window
+# Text input — every substitution off. Autocorrect, smart quotes and smart
+# dashes all corrupt code, paths and command lines pasted between apps.
+defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
+
+# Pointer — tracking speed well above the midpoint of the Settings slider
+defaults write NSGlobalDomain com.apple.trackpad.scaling -float 3
+
+# Dock — hidden until the pointer reaches the edge, icons a little larger than
+# stock. Stop reordering Spaces by recency, which makes keyboard window
 # managers unpredictable; dim the icons of hidden applications
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock tilesize -int 57
 defaults write com.apple.dock mru-spaces -bool false
 defaults write com.apple.dock showhidden -bool true
+
+# Finder opens in list view
+defaults write com.apple.finder FXPreferredViewStyle -string Nlsv
+
+# Menu bar clock — weekday and time, no date
+defaults write com.apple.menuextra.clock ShowDayOfWeek -bool true
+defaults write com.apple.menuextra.clock ShowDate -int 0
 
 # Screenshots to ~/Downloads as PNG, drop shadow kept
 defaults write com.apple.screencapture location -string "$HOME/Downloads"
@@ -389,6 +423,62 @@ Two settings have no user-preference key to record. **Power button: press and
 release sleeps the machine** was set in TinkerTool and is not visible in any
 `defaults` domain. **Currency in euro** follows from `AppleLocale = en_AT`
 rather than an explicit `AppleICUCurrencyCode`.
+
+### Settings `defaults write` cannot set
+
+Three of these are readable but not writable from a script, so each is a click
+path with the key to verify it afterwards.
+
+**Caps Lock sends Control.** Set per keyboard under Settings → Keyboard →
+Keyboard Shortcuts → Modifier Keys, once for the built-in keyboard and once for
+each external one. It lands in a per-device key whose name carries the USB
+vendor and product ID, so the exact key differs between machines:
+
+```bash
+defaults -currentHost read -g | grep -A5 modifiermapping
+```
+
+`Src = 30064771129` is `0x700000039`, the Caps Lock usage, and
+`Dst = 30064771300` is `0x7000000E0`, left Control. A `0-0-0` entry covers
+keyboards with no more specific mapping.
+
+**Zoom the whole display with Control and the scroll wheel.** Settings →
+Accessibility → Zoom → *Use scroll gesture with modifier keys to zoom*, with
+Control as the key. `com.apple.universalaccess` is protected by TCC, so
+`defaults write` fails with *"Could not write domain"* unless the calling
+program holds Full Disk Access. Verify:
+
+```bash
+defaults read com.apple.universalaccess closeViewScrollWheelToggle   # 1
+defaults read com.apple.universalaccess HIDScrollZoomModifierMask    # 262144 = Control
+```
+
+**Time Machine exclusions.** There is no verb that lists them; `tmutil` only
+answers about paths handed to it, and needs Full Disk Access to answer at all:
+
+```bash
+tmutil isexcluded ~/workspace ~/Library/Caches
+tmutil addexclusion -p <path>     # -p makes it stick to the path, not the inode
+```
+
+`~/workspace` is excluded, since it is a mount point for the disk image.
+`~/workspace.dmg.sparsebundle` is **not** excluded, so the projects inside it
+are backed up through the bundle itself rather than through the mount.
+
+### Menu bar and pointer
+
+| App | Purpose | Install |
+|-----|---------|---------|
+| [Hidden Bar](https://github.com/dwarvesf/hidden) | Collapses menu bar items behind an arrow | Manual, from GitHub releases |
+| [LinearMouse](https://linearmouse.app) | Per-device pointer acceleration and button mapping | `brew install --cask linearmouse` |
+
+LinearMouse keeps its configuration in `~/.config/linearmouse/linearmouse.json`
+(tracked), keyed by USB vendor and product ID, so a device it does not
+recognise falls back to the system setting.
+
+Hidden Bar is in the Brewfile's territory but not in the Brewfile: the
+`hiddenbar` cask points at a GitHub release asset that returns 404, so the
+install has to be manual until upstream fixes it.
 
 ## Credits
 
