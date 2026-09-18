@@ -48,6 +48,8 @@ brew "atlassian/acli/acli"
 brew "hashicorp/tap/terraform", trusted: true
 # Quick Look generator for Markdown files
 cask "qlmarkdown"
+# Store SSH keys in the Secure Enclave
+cask "secretive"
 # Plugin for AWS CLI to start and end sessions that connect to managed instances
 cask "session-manager-plugin"
 go "github.com/okta/okta-cli-client"

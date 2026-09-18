@@ -94,9 +94,19 @@ that churns whenever an extension changes.
 `brew bundle cleanup` lists formulae that are installed but absent from the
 Brewfile; it removes them only with `--force`.
 
-Homebrew does not cover everything: Secretive is installed from its GitHub
-releases, the workspace disk image is built by hand, and system preferences
-are `defaults write` calls. Those are the sections below.
+Homebrew does not cover everything: the workspace disk image is built by hand,
+Touch ID for `sudo` is a PAM file, and system preferences are `defaults write`
+calls. Those are the sections below.
+
+A fresh Homebrew install leaves `$(brew --prefix)/share` group-writable, which
+makes zsh's `compinit` stop on every new shell with *"Ignore insecure
+directories and continue?"*. Clear it once:
+
+```bash
+chmod g-w "$(brew --prefix)/share"
+```
+
+`compaudit` prints nothing when the directories are safe.
 
 Every command-line tool the shell files reference is in the Brewfile, and each
 is behind a `(( $+commands[...] ))` guard so a machine missing one still gets a
@@ -181,6 +191,55 @@ Why the split:
 - **All shells vs interactive vs login.** Env that must reach *non-interactive* shells — scripts, Claude Code, git subprocesses, LaunchAgents — goes in `.zshenv` (sourced unconditionally). `.zprofile` runs once per login shell (PATH). `.zshrc` runs for interactive shells (aliases, completions) and early-returns otherwise.
 - **SSH signing and auth via Secure Enclave.** `.zshenv` sets `SSH_AUTH_SOCK` to [Secretive](https://github.com/maxgoedjen/secretive)'s agent (guarded — no-op without it), so both commit signing and SSH authentication use a non-exportable Secure Enclave key. No general-purpose private key lives on disk; `~/.ssh` holds only per-host keypairs that a provider issued and the enclave cannot import, such as an AWS `.pem`.
 
+#### Recreating the device-local files
+
+None of the `.local` files or `.zprofile` are in the repository, so a new machine
+starts without them. `.zprofile` is the load-bearing one — without it there is no
+Homebrew on PATH.
+
+```bash
+# ~/.zprofile — PATH only
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+export PNPM_HOME="$HOME/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+# see "Node and Python" for the node-on-PATH block
+```
+
+```bash
+# ~/.zshrc.local — interactive-only, device-specific
+# nvm, lazy-loaded: sourcing nvm.sh eagerly costs ~1s
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+  _load_nvm() {
+    unset -f nvm node npm npx _load_nvm
+    \. "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+  }
+  for _cmd in nvm node npm npx; do
+    eval "${_cmd}() { _load_nvm; ${_cmd} \"\$@\"; }"
+  done
+fi
+
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+```
+
+```bash
+# ~/.zshenv.local — secrets that must reach non-interactive shells
+export SOME_API_TOKEN="..."
+```
+
+Installers routinely append to `~/.zshrc` instead, which is tracked and shared —
+move anything they add into the matching `.local` file, or into `.zprofile` when
+it only sets PATH.
+
 ### Node and Python
 
 `nvm` is lazy-loaded from `.zshrc.local` — sourcing `nvm.sh` eagerly costs about a
@@ -241,7 +300,41 @@ flowchart LR
        allowedSignersFile = ~/.config/git/allowed_signers
    ```
 5. *(Optional — enables local `git log --show-signature` verification)* create `~/.config/git/allowed_signers` with one line: `<your-git-email> <full contents of the .pub file>`.
-6. `SSH_AUTH_SOCK` is already exported by the tracked `~/.zshenv` (guarded), so signing works as soon as Secretive is running. Verify: `git log --show-signature -1` shows `Good "git" signature`.
+6. Create `~/.ssh/config` — it is not tracked, since it names internal hosts and
+   provider-issued key paths. The `Host *` block is what points `ssh` itself at
+   the enclave agent; without it the enclave key is not offered and `ssh` falls
+   back to whatever is on disk:
+   ```
+   Host *
+     AddKeysToAgent yes
+     UseKeychain yes
+     IdentityAgent ~/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh
+   ```
+   Per-host blocks below it carry their own `IdentityFile` for keys the enclave
+   cannot hold, such as an AWS `.pem`.
+7. `SSH_AUTH_SOCK` is already exported by the tracked `~/.zshenv` (guarded), so signing works as soon as Secretive is running. Verify: `git log --show-signature -1` shows `Good "git" signature`.
+
+### Touch ID for sudo
+
+`/etc/pam.d/sudo` already includes `sudo_local`, but that file does not ship.
+Creating it from the template enables Touch ID for `sudo`, and it survives OS
+updates:
+
+```bash
+sudo sh -c 'sed "s/^#auth/auth/" /etc/pam.d/sudo_local.template > /etc/pam.d/sudo_local'
+```
+
+The result is one active line: `auth sufficient pam_tid.so`. It does not apply
+over SSH.
+
+### Visual Studio Code
+
+Settings Sync carries extensions, settings, and keybindings — sign in and they
+return. Only `~/Library/Application Support/Code/User/` matters for a manual
+restore: `settings.json`, `keybindings.json`, `snippets/`, `prompts/`, `mcp.json`.
+Everything else in that directory is cache.
+
+`brew bundle dump` records extensions too when `--no-vscode` is dropped.
 
 ## System preferences
 
