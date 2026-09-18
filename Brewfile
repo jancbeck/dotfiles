@@ -1,9 +1,3 @@
-tap "atlassian/acli", trusted: true
-tap "hashicorp/tap"
-# Official Amazon AWS command-line interface
-brew "awscli"
-# Microsoft Azure CLI 2.0
-brew "azure-cli"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
 # Toolchain of the web
@@ -12,12 +6,20 @@ brew "biome"
 brew "btop"
 # Cloudflare Tunnel client (formerly Argo Tunnel)
 brew "cloudflared"
+# GNU File, Shell, and Text utilities
+brew "coreutils"
 # More intuitive version of du in rust
 brew "dust"
 # Modern, maintained replacement for ls
 brew "eza"
+# Simple, fast and user-friendly alternative to find
+brew "fd"
+# Play, record, convert, and stream select audio and video codecs
+brew "ffmpeg"
 # Command-line fuzzy finder written in Go
 brew "fzf"
+# Interact with Google Gemini AI models from the command-line
+brew "gemini-cli"
 # GitHub command-line tool
 brew "gh"
 # Syntax-highlighting pager for git and diff output
@@ -28,39 +30,50 @@ brew "git-lfs"
 brew "go"
 # Colorize logfiles and command output
 brew "grc"
+# GNU grep, egrep and fgrep
+brew "grep"
 # Modern and intuitive terminal-based text editor
 brew "micro"
+# Swiss-army knife of markup format conversion
+brew "pandoc"
+# Send macOS User Notifications from the command-line
+brew "terminal-notifier"
 # Official tldr client written in Rust
 brew "tlrc"
+# Terminal multiplexer
+brew "tmux"
+# Display directories as trees (with optional color/HTML output)
+brew "tree"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
+# Internet file retriever
+brew "wget"
 # Process YAML, JSON, XML, CSV and properties documents from the CLI
 brew "yq"
+# Feature-rich command-line audio/video downloader
+brew "yt-dlp"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # Fish-like fast/unobtrusive autosuggestions for zsh
 brew "zsh-autosuggestions"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
-# Software to interact with Atlassian Cloud from the terminal
-brew "atlassian/acli/acli"
-# Terraform
-brew "hashicorp/tap/terraform", trusted: true
 # Customise mouse behavior
 cask "linearmouse"
 # Quick Look generator for Markdown files
 cask "qlmarkdown"
+# Quick Look plugin for plaintext files without an extension
+cask "qlstephen"
+# Quick Look plugin for JSON files
+cask "quicklook-json"
 # Store SSH keys in the Secure Enclave
 cask "secretive"
-# Plugin for AWS CLI to start and end sessions that connect to managed instances
-cask "session-manager-plugin"
 # Editors, terminals and dev tools
 cask "claude"
 cask "docker-desktop"
 cask "ghostty"
 cask "iterm2"
 cask "lm-studio"
-cask "pgadmin4"
 cask "sublime-text"
 cask "tableplus"
 cask "visual-studio-code"
@@ -86,7 +99,9 @@ cask "google-gemini"
 cask "iina"
 cask "obsidian"
 cask "slack"
-cask "zoom"
-go "github.com/okta/okta-cli-client"
 npm "@steipete/summarize"
 npm "corepack"
+
+# Private, device-local entries (gitignored)
+local = File.expand_path("Brewfile.local", __dir__)
+instance_eval(File.read(local)) if File.exist?(local)

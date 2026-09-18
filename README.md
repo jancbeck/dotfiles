@@ -112,13 +112,14 @@ A cask is a GUI application rather than a command-line package, and here it is
 a provisioning record first and an update channel second. Homebrew marks any
 cask whose app updates itself as `auto_updates`, and `brew upgrade` then leaves
 it alone unless called with `--greedy`. Of the casks listed here only
-`secretive`, `session-manager-plugin`, `pgadmin4` and `devcleaner` are actually
-upgraded by Homebrew; the rest keep their own updaters. So the Brewfile is what
+`secretive`, `devcleaner` and the Quick Look plugins are actually upgraded by
+Homebrew; the rest keep their own updaters. So the Brewfile is what
 puts the applications on a new machine, and it does not take over their
 updates.
 
-A Brewfile is evaluated as Ruby, so anything that should not be public can live
-in a gitignored `~/Brewfile.local` pulled in at the end of the tracked one:
+A Brewfile is evaluated as Ruby, so anything that should not be public, or only
+belongs on one machine (work cloud CLIs, one-off project tools), can live in a
+gitignored `~/Brewfile.local` pulled in at the end of the tracked one:
 
 ```ruby
 local = File.expand_path("Brewfile.local", __dir__)
