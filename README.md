@@ -500,6 +500,48 @@ as Meta. In Ghostty that is `macos-option-as-alt`; `left` keeps the right
 Option key free for typing `@` and `€` on an Austrian layout. The same setting
 is what makes fzf's `Alt-C` work.
 
+### Window management
+
+macOS 26 tiles windows on its own — halves, quarters and fill, under Settings →
+Desktop & Dock → Windows, with shortcuts in Keyboard Shortcuts. What it does not
+do is send a window to the next display when the same shortcut is pressed again,
+and that is the reason Rectangle is here.
+
+Rectangle stores a shortcut as a virtual key code plus a modifier mask. The mask
+is the sum of Shift `131072`, Control `262144`, Option `524288` and Command
+`1048576`, so Command-Shift is `1179648`. Key codes are physical positions, not
+letters, so they hold across keyboard layouts: `F` is 3, `1` is 18, `2` is 19.
+
+```bash
+osascript -e 'tell application "Rectangle" to quit'   # it owns its prefs while running
+defaults write com.knollsoft.Rectangle maximize  -dict keyCode -int 3  modifierFlags -int 1179648
+defaults write com.knollsoft.Rectangle leftHalf  -dict keyCode -int 18 modifierFlags -int 1179648
+defaults write com.knollsoft.Rectangle rightHalf -dict keyCode -int 19 modifierFlags -int 1179648
+defaults write com.knollsoft.Rectangle subsequentExecutionMode -int 1
+open -a Rectangle
+```
+
+`subsequentExecutionMode` decides what a repeated press does. `1` is
+`acrossMonitor`, which moves the window to the same position on the next
+display, so Command-Shift-F twice maximises on the other screen and a third
+press brings it back. The other values are `0` resize, `2` nothing,
+`3` across then resize, `4` cycle monitors, `5` resize and cycle quadrants.
+
+Rectangle needs Accessibility permission, without which the shortcuts are
+registered but do nothing. Its menu bar icon is hidden here
+(`hideMenubarIcon = 1`), so reach settings by launching the app again.
+
+Two shortcuts are macOS's own rather than Rectangle's:
+
+| Keys | What | Where |
+|------|------|-------|
+| Command and the key below Escape | Cycle windows of the focused app | Symbolic hotkey 27, set to key code 50 with modifier `1048576` |
+| Option-Tab | AltTab's window switcher with previews | AltTab's own default, which leaves Command-Tab as macOS's |
+
+Symbolic hotkey 27 is readable with
+`defaults read com.apple.symbolichotkeys AppleSymbolicHotKeys`, though it is set
+through Settings → Keyboard → Keyboard Shortcuts → Keyboard.
+
 ### Menu bar and pointer
 
 | App | Purpose | Install |
