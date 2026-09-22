@@ -1,119 +1,13 @@
-# Deny-by-default. The work tree is $HOME, so anything not listed here is
-# outside this repository — including ~/workspace and every project in it.
-# Tools that pass `git status -uall` ignore status.showUntrackedFiles, so
-# without this they enumerate the whole home directory.
-#
-# To track a new path, un-ignore each of its parent directories, then the
-# path itself, following the pattern below.
-
-/*
-!/.gitignore
-!/.agents/
-/.agents/*
-!/.agents/.skill-lock.json
-!/.claude/
-/.claude/*
-!/.claude/plugins/
-/.claude/plugins/*
-!/.claude/plugins/claude-hud/
-/.claude/plugins/claude-hud/*
-!/.claude/plugins/claude-hud/config.json
-!/.claude/skills/
-/.claude/skills/*
-!/.claude/skills/cfg/
-/.claude/skills/cfg/*
-!/.claude/skills/cfg/SKILL.md
-!/.claude/skills/gemini-image/
-/.claude/skills/gemini-image/*
-!/.claude/skills/gemini-image/scripts/
-/.claude/skills/gemini-image/scripts/*
-!/.claude/skills/gemini-image/scripts/generate.sh
-!/.claude/skills/gemini-image/SKILL.md
-!/.claude/skills/gpt-image/
-/.claude/skills/gpt-image/*
-!/.claude/skills/gpt-image/agents/
-/.claude/skills/gpt-image/agents/*
-!/.claude/skills/gpt-image/agents/openai.yaml
-!/.claude/skills/gpt-image/references/
-/.claude/skills/gpt-image/references/*
-!/.claude/skills/gpt-image/references/api-surface.md
-!/.claude/skills/gpt-image/references/config.md
-!/.claude/skills/gpt-image/references/prompting.md
-!/.claude/skills/gpt-image/scripts/
-/.claude/skills/gpt-image/scripts/*
-!/.claude/skills/gpt-image/scripts/gpt_image.py
-!/.claude/skills/gpt-image/tests/
-/.claude/skills/gpt-image/tests/*
-!/.claude/skills/gpt-image/tests/test_gpt_image.py
-!/.claude/skills/gpt-image/README.md
-!/.claude/skills/gpt-image/SKILL.md
-!/.claude/skills/md-to-pdf/
-/.claude/skills/md-to-pdf/*
-!/.claude/skills/md-to-pdf/SKILL.md
-!/.claude/skills/md-to-pdf/wrap-code.tex
-!/.claude/skills/transcribe-audio/
-/.claude/skills/transcribe-audio/*
-!/.claude/skills/transcribe-audio/SKILL.md
-!/.claude/CLAUDE.md
-!/.claude/settings.json
-!/.config/
-/.config/*
-!/.config/bat/
-/.config/bat/*
-!/.config/bat/themes/
-/.config/bat/themes/*
-!/.config/bat/themes/Visual Studio Light+.tmTheme
-!/.config/bat/config
-!/.config/gh/
-/.config/gh/*
-!/.config/gh/config.yml
-!/.config/gh/hosts.yml
-!/.config/ghostty/
-/.config/ghostty/*
-!/.config/ghostty/config
-!/.config/git/
-/.config/git/*
-!/.config/git/hooks/
-/.config/git/hooks/*
-!/.config/git/hooks/pre-commit
-!/.config/git/ignore
-!/.config/linearmouse/
-/.config/linearmouse/*
-!/.config/linearmouse/linearmouse.json
-!/.config/micro/
-/.config/micro/*
-!/.config/micro/bindings.json
-!/.config/micro/settings.json
-!/.config/yt-dlp/
-/.config/yt-dlp/*
-!/.config/yt-dlp/config
-!/.local/
-/.local/*
-!/.local/bin/
-/.local/bin/*
-!/.local/bin/config
-!/Library/
-/Library/*
-!/Library/Preferences/
-/Library/Preferences/*
-!/Library/Preferences/pnpm/
-/Library/Preferences/pnpm/*
-!/Library/Preferences/pnpm/config.yaml
-!/.gitconfig
-!/.gitignore
-!/.zshenv
-!/.zshrc
-!/Brewfile
-!/Brewfile.personal
-!/Brewfile.work
-!/CLAUDE.md
-!/README.md
-
-# Device-local: secrets and per-machine paths. Already excluded by the
-# deny-by-default rule above; listed explicitly so the intent is recorded.
+# Device-local shell files — never synced across machines
 .zprofile
 .zshrc.local
 .zshenv.local
+
+# Device-local git config (per-machine signing key path)
 .gitconfig.local
+
+# Written by `brew bundle install`; the Brewfile itself is the manifest
 Brewfile.lock.json
+
+# Untracked Homebrew entries for one machine, loaded by the tracked Brewfile
 Brewfile.local
