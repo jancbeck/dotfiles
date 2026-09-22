@@ -52,6 +52,17 @@ case ":$PATH:" in
   *) [[ -d $HOME/.lmstudio/bin ]] && export PATH="$PATH:$HOME/.lmstudio/bin" ;;
 esac
 
+# History. EXTENDED_HISTORY stores a timestamp and duration per entry, which is
+# what makes `history -i` and post-mortem forensics possible; the defaults
+# (SAVEHIST=1000, no timestamps) keep roughly a day of anonymous lines.
+# INC_APPEND_HISTORY_TIME writes each command as it finishes rather than at
+# shell exit, so a terminal that is killed still leaves its history behind.
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+setopt EXTENDED_HISTORY INC_APPEND_HISTORY_TIME
+setopt HIST_IGNORE_DUPS HIST_IGNORE_SPACE HIST_REDUCE_BLANKS
+
 # ls colors. CLICOLOR above turns them on for BSD ls; LSCOLORS picks the palette.
 # LS_COLORS is the GNU equivalent, read by coreutils, eza, fzf and tree.
 # Directories are bold blue rather than the default dim blue, which is close to
