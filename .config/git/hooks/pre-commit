@@ -1,0 +1,10 @@
+#!/bin/sh
+# Secret scan of the staged diff before every commit to the dotfiles repo.
+# Wired up with: config config --local core.hooksPath ~/.config/git/hooks
+# git exports GIT_DIR and GIT_WORK_TREE to hooks, so betterleaks sees the bare
+# repo through the same environment the config wrapper uses.
+if ! command -v betterleaks >/dev/null 2>&1; then
+  echo "pre-commit: betterleaks not installed (brew install betterleaks); refusing to commit unscanned" >&2
+  exit 1
+fi
+exec betterleaks git . --pre-commit --staged --redact

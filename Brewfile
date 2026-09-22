@@ -1,5 +1,7 @@
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
+# Secrets scanner; the dotfiles pre-commit hook runs it on the staged diff
+brew "betterleaks"
 # Toolchain of the web
 brew "biome"
 # Resource monitor. C++ version and continuation of bashtop and bpytop

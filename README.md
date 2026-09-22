@@ -49,6 +49,22 @@ Set the flag `showUntrackedFiles` to `no` on this specific (local) repository:
 config config --local status.showUntrackedFiles no
 ```
 
+### Secret scan before every commit
+
+The work tree is `$HOME`, so one careless `config add` can publish a token.
+`~/.config/git/hooks/pre-commit` runs [betterleaks](https://github.com/betterleaks/betterleaks)
+on the staged diff and blocks the commit on a finding. The hooks directory is
+tracked, but a bare repo has to be pointed at it once per machine; the setting
+is local to `~/.cfg`, so hooks in other repositories are untouched:
+
+```bash
+config config --local core.hooksPath ~/.config/git/hooks
+```
+
+`betterleaks` comes from the Brewfile. The hook refuses to commit when it is
+missing rather than silently skipping the scan; `config commit --no-verify`
+bypasses it for a one-off.
+
 ### Usage
 
 After you've executed the setup any file within the `$HOME` folder can be versioned with normal commands, replacing `git` with `config`, like:
