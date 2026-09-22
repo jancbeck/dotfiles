@@ -4,7 +4,7 @@
 
 [core]
 # Sets vim as the text editor for commit messages and interactive commands
-	editor = code --wait
+	editor = nano
 # Makes Git case-sensitive (important on macOS which has case-insensitive filesystem)
 	ignorecase = false
 # Ensure line endings are normalized to LF
