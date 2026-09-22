@@ -1,34 +1,23 @@
 # MacOS Dotfiles & Config
 
-The technique consists in storing a Git bare repository in a "side" folder (like `$HOME/.cfg` or `$HOME/.myconfig`) using a specially crafted alias so that commands are run against that repository and not the usual `.git` local folder, which would interfere with any other Git repositories around.
+The technique consists in storing a Git bare repository in a "side" folder (`$HOME/.cfg`) and running git against it through the `config` wrapper at `~/.local/bin/config`, so commands target that repository and not the usual `.git` folder of whatever project is around. `~/.zshenv` puts `~/.local/bin` on PATH for every shell, interactive or not.
 
 ## Installation
 
-Prior to the installation make sure you have committed the alias to your `.zshrc`:
-
-```bash
-alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-```
-
-Now clone your dotfiles into a bare repository in a "dot" folder of your
-
-`$HOME`:
+Clone the dotfiles into a bare repository in `$HOME`:
 
 ```bash
 git clone --bare https://github.com/jancbeck/dotfiles $HOME/.cfg
 ```
 
-Define the alias in the current shell scope:
+The wrapper is itself tracked, so for the first checkout call git directly:
 
 ```bash
-alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-```
-
-Checkout the actual content from the bare repository to your `$HOME`:
-
-```bash
+config() { /usr/bin/git --git-dir="$HOME/.cfg" --work-tree="$HOME" "$@"; }
 config checkout
 ```
+
+Every shell opened afterwards resolves `config` from `~/.local/bin`.
 
 The step above might fail with a message like:
 
@@ -62,14 +51,12 @@ config config --local status.showUntrackedFiles no
 
 ### Usage
 
-After you've executed the setup any file within the `$HOME` folder can be versioned with normal commands, replacing `git` with your newly created `config` alias, like:
+After you've executed the setup any file within the `$HOME` folder can be versioned with normal commands, replacing `git` with `config`, like:
 
 ```bash
 config status
-config add .vimrc
-config commit -m "Add vimrc"
-config add .bashrc
-config commit -m "Add bashrc"
+config add .zshrc
+config commit -m "Add zshrc"
 config push
 ```
 
@@ -161,7 +148,7 @@ working shell:
 |------|---------------|-------------|
 | `bat` | `cat`, and the man pager | `.zshrc`, `.config/bat/config` |
 | `eza` | `ls`, `ll`, `lt` | `.zshrc` |
-| `micro` | `nano` | `.zshrc`, `.config/micro/settings.json` |
+| `micro` | `nano`, and the editor for git and `$EDITOR` | `.zshrc`, `.gitconfig`, `.config/micro/settings.json` |
 | `zoxide` | adds `z` and `zi` next to `cd` | `.zshrc` |
 | `fzf` | Ctrl-R, Ctrl-T, Alt-C, and `zi`'s picker | `.zshrc` |
 | `grc` | colors read-only diagnostic commands | `.zshrc` |
@@ -210,10 +197,10 @@ Five files, split by **sync scope** (tracked = synced & public; `.local` = devic
 
 | File | Tracked? | Runs in | Holds |
 |------|----------|---------|-------|
-| `~/.zshenv` | yes (synced) | **all** shells (incl. non-interactive & scripts) | Minimal always-on env. Points `SSH_AUTH_SOCK` at the Secretive Secure Enclave agent (guarded). Sources `~/.zshenv.local`. No PATH here — macOS `path_helper` reorders it on login shells. |
+| `~/.zshenv` | yes (synced) | **all** shells (incl. non-interactive & scripts) | Minimal always-on env. Points `SSH_AUTH_SOCK` at the Secretive Secure Enclave agent (guarded). Sources `~/.zshenv.local`. Only `~/.local/bin` on PATH; anything order-sensitive belongs in `.zprofile`, since macOS `path_helper` reorders PATH on login shells. |
 | `~/.zshenv.local` | no (device-local) | all shells | Secrets/API keys that must reach non-interactive shells (scripts, Claude Code's Bash tool, LaunchAgents). |
 | `~/.zprofile` | no (device-local) | login shells | PATH-only env: `brew shellenv`, `PNPM_HOME`, `BUN_INSTALL`, `NVM_DIR`, plus the newest installed node's `bin` on PATH (see below). |
-| `~/.zshrc` | yes (synced via `config` alias) | interactive shells | Cross-device aliases, cached `compinit`, Docker CLI completions. Early-returns for non-interactive shells. Sources `~/.zshrc.local`. |
+| `~/.zshrc` | yes (synced) | interactive shells | Cross-device aliases, cached `compinit`, Docker CLI completions. Early-returns for non-interactive shells. Sources `~/.zshrc.local`. |
 | `~/.zshrc.local` | no (device-local) | interactive shells | Tokens + interactive init for device-specific tools: lazy-loaded `nvm.sh`, bun completion. |
 
 ```mermaid

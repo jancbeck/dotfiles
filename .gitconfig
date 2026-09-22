@@ -3,8 +3,8 @@
 	email = 865311+jancbeck@users.noreply.github.com
 
 [core]
-# Sets vim as the text editor for commit messages and interactive commands
-	editor = nano
+# Editor for commit messages and interactive commands
+	editor = micro
 # Makes Git case-sensitive (important on macOS which has case-insensitive filesystem)
 	ignorecase = false
 # Ensure line endings are normalized to LF
@@ -35,7 +35,7 @@
 
 [mergetool "vscode"]
 # Opens VS Code with the merged file and waits for editor to close before continuing
-	cmd = "code --wait "
+	cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
 
 [diff]
 # Uses VS Code for visual comparison of changes
@@ -45,18 +45,15 @@
 
 [difftool "vscode"]
 # Launches VS Code in diff mode to compare local and remote versions
-	cmd = "code --wait --diff  "
+	cmd = code --wait --diff $LOCAL $REMOTE
 
 [interactive]
 # Route `git add -p` hunks through delta as well
 	diffFilter = delta --color-only
 
 [delta]
-# delta reads bat's theme assets, so this is the same local theme bat uses.
-# Both keys move together when switching to a dark terminal: dark = true and
-# the Visual Studio Dark+ theme.
-	syntax-theme = Visual Studio Light+
-	light = true
+# Follow the terminal background, matching bat's auto:system theme selection
+	detect-dark-light = auto
 # Line numbers instead of +/- columns
 	line-numbers = true
 # n and N jump between files in the pager
@@ -95,8 +92,6 @@
 [pull]
 # Rebase local changes on pull for cleaner history
 	rebase = true
-# Ensure fast-forward merge when possible
-	ff = only
 
 [rebase]
 # Automatically stash and unstash changes during rebase
@@ -111,10 +106,6 @@
 [status]
 # Show untracked files in directories rather than just the directory
 	showUntrackedFiles = all
-
-[blame]
-# Ignore whitespace changes in blame
-	ignoreRevsFile = .git-blame-ignore-revs
 
 [includeIf "gitdir:~/workspace/"]
 # Loads workspace-specific Git settings when working in projects under ~/workspace/

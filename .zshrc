@@ -11,27 +11,16 @@ fi
 [[ "$PWD" == "$HOME" ]] && [[ -d ~/workspace ]] && cd ~/workspace
 
 export LANG=en_US.UTF-8
-export LC_CTYPE=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-export EDITOR='code'
+export EDITOR='micro'
 export CLICOLOR=YES
 
 alias ll='ls -la --color'
-
-# homebrew
 
 # HOMEBREW_PREFIX is exported by `brew shellenv` in ~/.zprofile; the fallback
 # covers non-login interactive shells. Avoids forking `brew --prefix` per launch.
 _brew_prefix="${HOMEBREW_PREFIX:-/opt/homebrew}"
 [[ -d $_brew_prefix/share/zsh-completions ]] && \
   FPATH="$_brew_prefix/share/zsh-completions:$FPATH"
-
-case ":$PATH:" in
-  *":/usr/local/bin:"*) ;;
-  *) export PATH="/usr/local/bin:$PATH" ;;
-esac
-
-# homebrew end
 
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 [[ -d $HOME/.docker/completions ]] && fpath=($HOME/.docker/completions $fpath)
@@ -57,8 +46,11 @@ fi
 #   Alt-C   fuzzy cd into a subdirectory of the current one
 (( $+commands[fzf] )) && source <(fzf --zsh)
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:$HOME/.lmstudio/bin"
+# LM Studio CLI (lms)
+case ":$PATH:" in
+  *":$HOME/.lmstudio/bin:"*) ;;
+  *) [[ -d $HOME/.lmstudio/bin ]] && export PATH="$PATH:$HOME/.lmstudio/bin" ;;
+esac
 
 # ls colors. CLICOLOR above turns them on for BSD ls; LSCOLORS picks the palette.
 # LS_COLORS is the GNU equivalent, read by coreutils, eza, fzf and tree.
@@ -120,8 +112,12 @@ _git_prompt() {
     dir=${dir:h}
   done
   [[ -n $gitdir ]] || return 0
-  # Linked worktrees and submodules leave a `gitdir: <path>` pointer file.
-  [[ -f $gitdir ]] && gitdir=${"$(<$gitdir)"#gitdir: }
+  # Linked worktrees and submodules leave a `gitdir: <path>` pointer file;
+  # submodules write it relative to the directory holding the pointer.
+  if [[ -f $gitdir ]]; then
+    gitdir=${"$(<$gitdir)"#gitdir: }
+    [[ $gitdir != /* ]] && gitdir=$dir/$gitdir
+  fi
   [[ -r $gitdir/HEAD ]] || return 0
 
   local head=${"$(<$gitdir/HEAD)"} branch

@@ -3,9 +3,6 @@
 # Do not copy the mtime
 --no-mtime
 
-# WORKAROUND FOR CERTIFICATE_VERIFY_FAILED ERROR
---no-check-certificate
-
 # output
 # Save all videos under Downloads directory in your home directory
 -P "~/Downloads"
