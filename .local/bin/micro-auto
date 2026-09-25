@@ -1,0 +1,9 @@
+#!/bin/sh
+# micro with the VS Code colorscheme matching the current macOS appearance.
+# Ghostty follows the same setting, so editor and terminal switch together.
+if [ "$(defaults read -g AppleInterfaceStyle 2>/dev/null)" = Dark ]; then
+  scheme=vscode-dark
+else
+  scheme=vscode-light
+fi
+exec micro -colorscheme "$scheme" "$@"

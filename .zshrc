@@ -11,7 +11,7 @@ fi
 [[ "$PWD" == "$HOME" ]] && [[ -d ~/workspace ]] && cd ~/workspace
 
 export LANG=en_US.UTF-8
-export EDITOR='micro'
+export EDITOR='micro-auto'
 export CLICOLOR=YES
 
 alias ll='ls -la --color'
@@ -106,7 +106,7 @@ fi
 # matches in fzf when several fit. cd itself is left alone.
 (( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
 
-(( $+commands[micro] )) && alias nano='micro'
+(( $+commands[micro] )) && alias micro='micro-auto' nano='micro-auto'
 
 # Prompt: current dir, git branch with dirty/staged markers, and a prompt char
 # that turns red on a non-zero exit.

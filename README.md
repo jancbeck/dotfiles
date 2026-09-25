@@ -164,7 +164,7 @@ working shell:
 |------|---------------|-------------|
 | `bat` | `cat`, and the man pager | `.zshrc`, `.config/bat/config` |
 | `eza` | `ls`, `ll`, `lt` | `.zshrc` |
-| `micro` | `nano`, and the editor for git and `$EDITOR` | `.zshrc`, `.gitconfig`, `.config/micro/settings.json` |
+| `micro` | `nano`, and the editor for git and `$EDITOR` | `.zshrc`, `.gitconfig`, `.config/micro/settings.json`, `.local/bin/micro-auto` |
 | `zoxide` | adds `z` and `zi` next to `cd` | `.zshrc` |
 | `fzf` | Ctrl-R, Ctrl-T, Alt-C, and `zi`'s picker | `.zshrc` |
 | `grc` | colors read-only diagnostic commands | `.zshrc` |
@@ -512,6 +512,14 @@ keybindings are left stock: a remapped key would make the menu lie.
 as Meta. In Ghostty that is `macos-option-as-alt`; `left` keeps the right
 Option key free for typing `@` and `€` on an Austrian layout. The same setting
 is what makes fzf's `Alt-C` work.
+
+micro cannot tell a light terminal from a dark one, so `~/.local/bin/micro-auto`
+reads the macOS appearance at launch and passes `-colorscheme vscode-light` or
+`vscode-dark`, the VS Code Light+ and Dark+ palettes. Ghostty follows the same
+setting. `EDITOR`, git's `core.editor` and the `micro` and `nano` aliases all go
+through the wrapper; an open editor keeps its scheme until it is restarted. Both
+schemes leave the background to the terminal and need 24-bit colour, which
+Ghostty advertises through `COLORTERM=truecolor`.
 
 ### Window management
 

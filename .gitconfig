@@ -4,7 +4,7 @@
 
 [core]
 # Editor for commit messages and interactive commands
-	editor = micro
+	editor = micro-auto
 # Makes Git case-sensitive (important on macOS which has case-insensitive filesystem)
 	ignorecase = false
 # Ensure line endings are normalized to LF
