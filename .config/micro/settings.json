@@ -1,4 +1,5 @@
 {
+    "colorscheme": "vscode-light",
     "keymenu": true,
     "mkparents": true,
     "savecursor": true,
