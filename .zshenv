@@ -19,5 +19,8 @@ case ":$PATH:" in
   *) export PATH="$HOME/.local/bin:$PATH" ;;
 esac
 
+# brew upgrade also updates casks whose apps update themselves.
+export HOMEBREW_UPGRADE_GREEDY=1
+
 # Device-local env (API keys, secrets) — not tracked; see ~/.gitignore.
 [ -r "$HOME/.zshenv.local" ] && . "$HOME/.zshenv.local"
