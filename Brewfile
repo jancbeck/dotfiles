@@ -50,6 +50,8 @@ brew "tmux"
 brew "tree"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
+# Unified toolchain and entry point for web development
+brew "vite-plus"
 # Internet file retriever
 brew "wget"
 # Process YAML, JSON, XML, CSV and properties documents from the CLI
