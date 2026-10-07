@@ -19,8 +19,5 @@ case ":$PATH:" in
   *) export PATH="$HOME/.local/bin:$PATH" ;;
 esac
 
-# Vite+ bin (https://viteplus.dev) — guarded so it's safe on devices without it.
-[ -r "$HOME/.vite-plus/env" ] && . "$HOME/.vite-plus/env"
-
 # Device-local env (API keys, secrets) — not tracked; see ~/.gitignore.
 [ -r "$HOME/.zshenv.local" ] && . "$HOME/.zshenv.local"
