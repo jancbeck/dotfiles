@@ -68,8 +68,6 @@ cask "linearmouse"
 cask "qlmarkdown"
 # Quick Look plugin for plaintext files without an extension
 cask "qlstephen"
-# Quick Look plugin for JSON files
-cask "quicklook-json"
 # Store SSH keys in the Secure Enclave
 cask "secretive"
 # Editors, terminals and dev tools
