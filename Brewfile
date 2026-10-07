@@ -34,8 +34,6 @@ brew "go"
 brew "grc"
 # GNU grep, egrep and fgrep
 brew "grep"
-# Mac App Store command-line interface; installs the mas entries below
-brew "mas"
 # Modern and intuitive terminal-based text editor
 brew "micro"
 # Swiss-army knife of markup format conversion
@@ -105,22 +103,6 @@ cask "google-gemini"
 cask "iina"
 cask "obsidian"
 cask "slack"
-# Mac App Store: only where no cask exists. Installs need an App Store sign-in
-# with the Apple ID that owns the app.
-mas "Amphetamine", id: 937984704
-mas "Gapplin", id: 768053424
-mas "HextEdit", id: 1557247094
-mas "Keynote", id: 409183694
-mas "Lightweight PDF", id: 1450640351
-mas "MuteKey", id: 1509590766
-mas "Numbers", id: 409203825
-mas "OpenVox", id: 6758789314
-mas "Pages", id: 409201541
-mas "Patterns", id: 429449079
-mas "Shortery", id: 1594183810
-mas "StopTheScript", id: 1588394487
-mas "Webp Converter", id: 1527716894
-mas "Xcode", id: 497799835
 npm "@steipete/summarize"
 npm "corepack"
 

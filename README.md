@@ -105,8 +105,9 @@ whenever an extension updates, and Settings Sync already carries them.
 `brew bundle check` reports the untracked applications as missing, because it
 asks Homebrew rather than looking in `/Applications`. Running
 `brew install --cask --adopt <token>` hands an existing app to Homebrew, but
-only adopts in place when the installed version matches the cask exactly;
-otherwise it replaces the app with the cask's version.
+only when the installed version matches the cask exactly; otherwise it refuses
+and leaves the app alone. `brew install --cask --force <token>` replaces the
+app with the cask's version instead.
 
 `brew bundle cleanup` lists formulae that are installed but absent from the
 Brewfile; it removes them only with `--force`.
@@ -114,14 +115,16 @@ Brewfile; it removes them only with `--force`.
 A cask is a GUI application rather than a command-line package, and here it is
 a provisioning record first and an update channel second. Homebrew marks any
 cask whose app updates itself as `auto_updates`, and `brew upgrade` then leaves
-it alone unless called with `--greedy`. Of the casks listed here only
-`secretive`, `devcleaner` and the Quick Look plugins are actually upgraded by
-Homebrew; the rest keep their own updaters. So the Brewfile is what
-puts the applications on a new machine, and it does not take over their
-updates.
+it alone unless called with `--greedy`. `brew bundle install` does not make
+that exception: it upgrades every outdated cask in the Brewfile, closing the
+running app to do so. Add `--no-upgrade` to install only what is missing and
+leave updates to each app's own updater.
 
-App Store apps appear as `mas` entries, and only when no cask exists. `mas`
-installs what the signed-in Apple ID already owns; it cannot buy an app.
+App Store apps appear as `mas` entries in `~/Brewfile.personal`, and only when
+no cask exists. `mas` installs what the signed-in Apple ID already owns; it
+cannot buy an app, and each install asks for an administrator password. The
+work machine has no App Store sign-in, so the entries stay out of the shared
+Brewfile.
 
 A Brewfile is evaluated as Ruby, so the tracked one ends by loading more files:
 
@@ -129,7 +132,7 @@ A Brewfile is evaluated as Ruby, so the tracked one ends by loading more files:
 |------|----------|-------|
 | `~/Brewfile` | yes | Everything both machines use |
 | `~/Brewfile.work` | yes | Work-only tools: cloud CLIs, Terraform, Zoom |
-| `~/Brewfile.personal` | yes | Personal-only apps and tools |
+| `~/Brewfile.personal` | yes | Personal-only apps and tools, and the App Store apps |
 | `~/Brewfile.local` | no | Optional entries for this one machine |
 
 `HOMEBREW_DOTFILES_PROFILE` picks the profile file. It is set to `work` or
