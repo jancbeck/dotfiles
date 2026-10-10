@@ -301,7 +301,7 @@ Putting pnpm-only keys in `~/.npmrc` makes npm warn about unknown config.
 
 Commits are signed with an SSH key held in the macOS Secure Enclave through [Secretive](https://github.com/maxgoedjen/secretive). The private key is non-exportable — nothing on the machine (sandboxed or not) can read or copy it; it only signs. `~/.zshenv` points `SSH_AUTH_SOCK` at Secretive's agent socket so signing works in every shell.
 
-**Why the git config is split.** Each machine's enclave key has its own identifier, so the `user.signingkey` path differs per device and must not live in the synced `~/.gitconfig`:
+**Why the git config is split.** Each machine has its own enclave key, so `user.signingkey` differs per device and must not live in the synced `~/.gitconfig`:
 
 - `~/.gitconfig` (tracked) ends with `[include] path = ~/.gitconfig.local`.
 - `~/.gitconfig.local` (gitignored) holds the device-specific signing block: `user.signingkey`, `commit.gpgsign`, `gpg.format = ssh`, `gpg.ssh.allowedSignersFile`.
@@ -316,13 +316,13 @@ flowchart LR
 **New machine setup:**
 
 1. Install Secretive: `brew install --cask secretive`, then open it.
-2. Create a Secure Enclave key (the **+**). Leave *"Authenticate before use"* **off** for unattended signing. Secretive writes the public key to `~/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/PublicKeys/<id>.pub`.
+2. Create a Secure Enclave key (the **+**). Leave *"Authenticate before use"* **off** for unattended signing. `ssh-add -L` prints the public key once the agent is running.
 3. Add that public key to GitHub → Settings → SSH and GPG keys **twice**: once as type **Signing key**, once as type **Authentication key**. A signing key does not grant authentication — with only the signing entry, `ssh -T git@github.com` silently falls back to any on-disk key and prompts for its passphrase. Verify which key is accepted with `ssh -v -T git@github.com` and look for `Server accepts key`.
    Do the same for any other host reached over SSH (Azure DevOps, remote boxes' `authorized_keys`).
-4. Create `~/.gitconfig.local` (gitignored), replacing the path with your new key's `.pub`:
+4. Create `~/.gitconfig.local` (gitignored) with the public key inline:
    ```ini
    [user]
-       signingkey = ~/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/PublicKeys/<id>.pub
+       signingkey = key::ecdsa-sha2-nistp256 AAAA...
    [commit]
        gpgsign = true
    [gpg]
@@ -330,7 +330,14 @@ flowchart LR
    [gpg "ssh"]
        allowedSignersFile = ~/.config/git/allowed_signers
    ```
-5. *(Optional — enables local `git log --show-signature` verification)* create `~/.config/git/allowed_signers` with one line: `<your-git-email> <full contents of the .pub file>`.
+   The `key::` form hands git the key itself rather than a path. Secretive also
+   writes it to a `.pub` file inside its app container, but macOS denies other
+   programs access to that container, so git cannot load it from there. Fill it
+   in from the agent:
+   ```bash
+   git config --file ~/.gitconfig.local user.signingkey "key::$(ssh-add -L | head -1 | cut -d' ' -f1,2)"
+   ```
+5. *(Optional — enables local `git log --show-signature` verification)* create `~/.config/git/allowed_signers` with one line: `<your-git-email> <key type and key from ssh-add -L>`.
 6. Create `~/.ssh/config` — it is not tracked, since it names internal hosts and
    provider-issued key paths. The `Host *` block is what points `ssh` itself at
    the enclave agent; without it the enclave key is not offered and `ssh` falls
