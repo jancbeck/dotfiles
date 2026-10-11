@@ -71,6 +71,7 @@ cask "qlstephen"
 # Store SSH keys in the Secure Enclave
 cask "secretive"
 # Editors, terminals and dev tools
+cask "azure-cli"
 cask "claude"
 cask "docker-desktop"
 cask "ghostty"
