@@ -31,12 +31,11 @@
       "mcp__ide__getDiagnostics"
     ],
     "ask": [
-      "Bash(git push *)",
       "Bash(git publish *)"
     ],
     "defaultMode": "auto"
   },
-  "model": "opus",
+  "model": "opus[1m]",
   "hooks": {
     "Notification": [
       {
@@ -91,7 +90,6 @@
   "enabledPlugins": {
     "commit-commands@claude-plugins-official": true,
     "document-skills@anthropic-agent-skills": false,
-    "context7@claude-plugins-official": true,
     "feature-dev@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
