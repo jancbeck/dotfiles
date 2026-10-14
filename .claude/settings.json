@@ -94,7 +94,6 @@
     "skill-creator@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
     "claude-hud@claude-hud": true,
-    "vercel@claude-plugins-official": true,
     "vercel-plugin@vercel": true
   },
   "extraKnownMarketplaces": {
@@ -155,6 +154,11 @@
     }
   },
   "effortLevel": "high",
+  "modelSettings": {
+    "claude-sonnet-5-5": {
+      "effortLevel": "xhigh"
+    }
+  },
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
