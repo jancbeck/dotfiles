@@ -14,6 +14,9 @@ cask "sequel-ace"
 cask "shapr3d"
 cask "telegram"
 cask "whatsapp"
+cask "cloudflare-warp"
+# Bitcoin wallet
+cask "sparrow"
 # Mac App Store: only where no cask exists. Installs need an App Store sign-in
 # with the Apple ID that owns the app.
 mas "AdGuard for Safari", id: 1440147259
