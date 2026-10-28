@@ -64,8 +64,6 @@ brew "zsh-syntax-highlighting"
 cask "linearmouse"
 # Quick Look generator for Markdown files
 cask "qlmarkdown"
-# Quick Look plugin for plaintext files without an extension
-cask "qlstephen"
 # Store SSH keys in the Secure Enclave
 cask "secretive"
 # Editors, terminals and dev tools
