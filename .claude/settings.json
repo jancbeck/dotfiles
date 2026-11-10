@@ -148,8 +148,10 @@
       "allowRead": [
         "~/.summarize"
       ]
-    }
+    },
+    "enableWeakerNetworkIsolation": true
   },
+  "feedbackDrafts": "off",
   "effortLevel": "high",
   "modelSettings": {
     "claude-sonnet-5-5": {
@@ -162,6 +164,8 @@
   "theme": "auto",
   "verbose": true,
   "autoCompactEnabled": true,
+  "idleCompaction": false,
+  "teammateMode": "auto",
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
