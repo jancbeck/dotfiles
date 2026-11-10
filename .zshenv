@@ -22,5 +22,14 @@ esac
 # brew upgrade also updates casks whose apps update themselves.
 export HOMEBREW_UPGRADE_GREEDY=1
 
+# Claude Code's sandbox (SANDBOX_RUNTIME) cannot write to ~/.npm. npm reports
+# that as "your cache folder contains root-owned files", although the folder is
+# owned by the user. Use a cache the sandbox may write to. Node's fetch also
+# ignores the sandbox's proxy unless it is asked to follow it.
+if [[ -n $SANDBOX_RUNTIME ]]; then
+  export npm_config_cache="${TMPDIR:-/tmp}/npm-cache"
+  export NODE_USE_ENV_PROXY=1
+fi
+
 # Device-local env (API keys, secrets) — not tracked; see ~/.gitignore.
 [ -r "$HOME/.zshenv.local" ] && . "$HOME/.zshenv.local"

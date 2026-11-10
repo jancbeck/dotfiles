@@ -195,7 +195,7 @@ Five files, split by **sync scope** (tracked = synced & public; `.local` = devic
 
 | File | Tracked? | Runs in | Holds |
 |------|----------|---------|-------|
-| `~/.zshenv` | yes (synced) | **all** shells (incl. non-interactive & scripts) | Minimal always-on env. Points `SSH_AUTH_SOCK` at the Secretive Secure Enclave agent (guarded). Sources `~/.zshenv.local`. Only `~/.local/bin` on PATH; anything order-sensitive belongs in `.zprofile`, since macOS `path_helper` reorders PATH on login shells. |
+| `~/.zshenv` | yes (synced) | **all** shells (incl. non-interactive & scripts) | Minimal always-on env. Points `SSH_AUTH_SOCK` at the Secretive Secure Enclave agent (guarded). Inside Claude Code's sandbox (`SANDBOX_RUNTIME` set) it points npm's cache at `$TMPDIR` and makes Node's `fetch` follow the sandbox proxy; the sandbox cannot write to `~/.npm`, and npm reports that as "root-owned files". Sources `~/.zshenv.local`. Only `~/.local/bin` on PATH; anything order-sensitive belongs in `.zprofile`, since macOS `path_helper` reorders PATH on login shells. |
 | `~/.zshenv.local` | no (device-local) | all shells | Secrets/API keys that must reach non-interactive shells (scripts, Claude Code's Bash tool, LaunchAgents). |
 | `~/.zprofile` | no (device-local) | login shells | PATH-only env: `brew shellenv`, `PNPM_HOME`, `BUN_INSTALL`, `NVM_DIR`, plus the newest installed node's `bin` on PATH (see below). |
 | `~/.zshrc` | yes (synced) | interactive shells | Cross-device aliases, cached `compinit`, Docker CLI completions. Early-returns for non-interactive shells. Sources `~/.zshrc.local`. |
