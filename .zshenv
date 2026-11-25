@@ -31,5 +31,8 @@ if [[ -n $SANDBOX_RUNTIME ]]; then
   export NODE_USE_ENV_PROXY=1
 fi
 
+# Vite+ setup must not append to shell files; .zshenv.local loads it instead.
+export VP_SELF_SETUP_NO_MODIFY_PATH=1
+
 # Device-local env (API keys, secrets) — not tracked; see ~/.gitignore.
 [ -r "$HOME/.zshenv.local" ] && . "$HOME/.zshenv.local"
