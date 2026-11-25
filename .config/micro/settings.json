@@ -4,6 +4,8 @@
     "mkparents": true,
     "savecursor": true,
     "scrollbar": true,
+    "softwrap": true,
     "tabsize": 2,
-    "tabstospaces": true
+    "tabstospaces": true,
+    "wordwrap": true
 }
