@@ -94,7 +94,6 @@ cask "the-unarchiver"
 cask "upscayl"
 # Media and communication
 cask "discord"
-cask "google-gemini"
 cask "iina"
 cask "obsidian"
 cask "slack"
