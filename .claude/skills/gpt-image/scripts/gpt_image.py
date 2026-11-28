@@ -34,7 +34,7 @@ def is_gpt_image_2_model(model: str) -> bool:
 
 
 def is_gpt_image_2_5_model(model: str) -> bool:
-    return model.startswith("gpt-image-2.5")
+    return model.startswith(("gpt-image-2.5", "gpt-image-2.6"))
 
 
 def load_dotenv(path: Path) -> Dict[str, str]:
@@ -121,7 +121,8 @@ def parse_args() -> argparse.Namespace:
 
     def add_common_image_args(subparser: argparse.ArgumentParser) -> None:
         subparser.add_argument("--size", help="Image size, for example 1024x1024, 1536x1024, or auto.")
-        subparser.add_argument("--quality", help="Image quality: auto, low, medium, high; xhigh and max on gpt-image-2.5 models.")
+        subparser.add_argument("--quality", help="Image quality: auto, low, medium, high; xhigh and max on gpt-image-2.5 and 2.6 models.")
+        subparser.add_argument("--complexity", choices=["low", "medium", "high"], help="Image complexity (gpt-image-2.6): low, medium, high.")
         subparser.add_argument("--background", help="Image background: auto, opaque, or transparent (png or webp only).")
         subparser.add_argument("--format", dest="output_format", help="Output format: png, jpeg, or webp.")
         subparser.add_argument("--compression", type=int, help="Output compression 0..100 for jpeg/webp.")
@@ -201,7 +202,7 @@ def validate_common_options(
     stream: bool,
 ) -> None:
     if quality in {"xhigh", "max"} and not is_gpt_image_2_5_model(model):
-        raise SystemExit("quality xhigh and max require a gpt-image-2.5 model.")
+        raise SystemExit("quality xhigh and max require a gpt-image-2.5 or 2.6 model.")
     if background == "transparent" and output_format not in {"png", "webp"}:
         raise SystemExit("background transparent requires output_format png or webp.")
     if output_compression is not None and output_format not in {"jpeg", "webp"}:
@@ -539,6 +540,7 @@ def resolve_common_image_options(args: argparse.Namespace, dotenv_values: Dict[s
     return {
         "size": size,
         "quality": quality,
+        "complexity": getattr(args, "complexity", None),
         "background": background,
         "output_format": output_format,
         "output_compression": output_compression,

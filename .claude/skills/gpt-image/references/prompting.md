@@ -6,16 +6,17 @@ Condensed from OpenAI's [image prompting guide](https://developers.openai.com/ap
 
 | Model | Use when |
 | --- | --- |
-| `gpt-image-2.5-flare` | Speed matters. Quality comparable to `gpt-image-2`, lower latency. First candidate for an existing `gpt-image-2` workflow. |
-| `gpt-image-2.5-sunburst` | Quality matters. Better than `gpt-image-2`; try it when `gpt-image-2` falls short on a complex request. |
+| `gpt-image-2.6-flare` | Speed matters. Quality comparable to `gpt-image-2`, lower latency. First candidate for an existing `gpt-image-2` workflow. |
+| `gpt-image-2.6-sunburst` | Quality matters. Better than `gpt-image-2`; try it when `gpt-image-2` falls short on a complex request. |
 | `gpt-image-2` | Existing, validated workflows. |
 
-Both 2.5 models support generation, edits, and transparent backgrounds, and are better at precise edits and subject preservation. Once Sunburst meets the bar, test Flare with the same prompt and inputs and switch if quality holds.
+Both 2.6 models support generation, edits, and transparent backgrounds, and are better at precise edits and subject preservation. Once Sunburst meets the bar, test Flare with the same prompt and inputs and switch if quality holds.
 
 ## Parameters
 
-- `quality`: `auto`, `low`, `medium`, `high`; 2.5 models add `xhigh` and `max`. Start at `medium`; use `high` for small text, dense labels, legends, and slides. Use `xhigh`/`max` only when a lower setting misses a concrete requirement. The same label does not mean the same quality or latency across models.
-- `size`: `auto` or `WIDTHxHEIGHT`. Common sizes: `1024x1024`, `1536x1024`, `1024x1536`, `1536x864` (deck slides), `2048x2048`, `2048x1152`, `3840x2160`, `2160x3840`. Outputs above `2560x1440` (3,686,400 pixels) are experimental.
+- `quality`: `auto`, `low`, `medium`, `high`; 2.5 and 2.6 models add `xhigh` and `max`. Start at `medium`; use `high` for small text, dense labels, legends, and slides. Use `xhigh`/`max` only when a lower setting misses a concrete requirement. The same label does not mean the same quality or latency across models.
+- `complexity` (`--complexity`): `low`, `medium`, `high` on 2.6 models. Small effect in practice; prompt wording controls detail far more. See [art-direction.md](./art-direction.md).
+- `size`: `auto` or `WIDTHxHEIGHT`. The total must be at least 655,360 pixels (`1088x608` is the smallest 16:9). Common sizes: `1024x1024`, `1536x1024`, `1024x1536`, `1536x864` (deck slides), `2048x2048`, `2048x1152`, `3840x2160`, `2160x3840`. Outputs above `2560x1440` (3,686,400 pixels) are experimental.
 - `background=transparent`: use PNG or WebP, and also ask for transparency in the prompt. Check the alpha channel on hair, glass, shadows, and edges. A drawn checkerboard is not transparency.
 - `output_compression`: JPEG or WebP only.
 - `input_fidelity`: omit for `gpt-image-2*`; image inputs are always high fidelity.

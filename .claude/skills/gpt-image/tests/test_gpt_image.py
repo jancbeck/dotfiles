@@ -161,7 +161,7 @@ class GptImageCliTest(unittest.TestCase):
         self.assertNotEqual(rejected.returncode, 0)
         self.assertIn("gpt-image-2.5", rejected.stderr)
 
-        accepted = self.generate_dry_run("--quality", "max", "--model", "gpt-image-2.5-sunburst")
+        accepted = self.generate_dry_run("--quality", "max", "--model", "gpt-image-2.6-sunburst")
         self.assertEqual(accepted.returncode, 0, accepted.stderr)
 
 

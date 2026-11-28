@@ -19,7 +19,7 @@ Skills under `~/.claude/skills/` fall into three categories:
 
 - **Third-party skills** — tracked in the `npx skills` lockfile at `~/.agents/.skill-lock.json` (committed to dotfiles). Installed via `npx skills add` (see Step 2) and updated via `npx skills update -g`. Their skill folders themselves are **not** committed to the dotfiles repo.
 - **Custom skills** — written by the user, committed to the dotfiles repo. Before staging a new custom skill, **ask the user** to confirm they want it tracked.
-- **Computer-specific skills** — left untracked, never committed.
+- **Computer-specific skills** — left untracked, never committed. Listed in `~/.cfg/info/exclude`, which is local to each machine. Add a pattern there when the user says a skill stays out of the repo.
 
 ## Workflow
 
@@ -61,9 +61,12 @@ Since `showUntrackedFiles` is disabled, manually check key directories for new f
 config ls-files --others --exclude-standard ~/.claude/skills/
 ```
 
-Each untracked path looks like `.claude/skills/<folder>/...`. Compare `<folder>` against the keys in `~/.agents/.skill-lock.json`:
-- Match → skip (managed by lockfile, never commit).
-- No match → custom or computer-specific. **Ask the user** whether to add it. Do not stage without confirmation.
+`--exclude-standard` reads `~/.cfg/info/exclude`, so computer-specific skills never show up here. Do not ask about them.
+
+Each untracked path looks like `.claude/skills/<folder>/...`. Sort it by `<folder>`:
+- `<folder>` is a key in `~/.agents/.skill-lock.json` → skip (managed by lockfile, never commit).
+- `<folder>` already has tracked files (`config ls-files ~/.claude/skills/<folder>` prints something) → custom skill, stage the new file without asking.
+- Anything else → a new skill. **Ask the user** whether to track it or add it to `~/.cfg/info/exclude`. Do not stage without confirmation.
 
 ### Step 5: Show Diff
 If there are unstaged changes:

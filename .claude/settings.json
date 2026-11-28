@@ -141,6 +141,7 @@
       ],
       "allowLocalBinding": true
     },
+    "excludedCommands": ["python3 ~/.claude/skills/gpt-image/scripts/gpt_image.py *"],
     "filesystem": {
       "allowWrite": [
         "~/workspace",
@@ -157,6 +158,9 @@
   "modelSettings": {
     "claude-sonnet-5-5": {
       "effortLevel": "xhigh"
+    },
+    "claude-opus-5-5": {
+      "autoCompactWindow": 500000
     }
   },
   "autoUpdatesChannel": "latest",

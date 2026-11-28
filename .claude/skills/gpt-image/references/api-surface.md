@@ -68,7 +68,7 @@ Constraints:
 
 ## Shared GPT Image 2 validation
 
-Applies to `gpt-image-2` and `gpt-image-2.5-flare` / `gpt-image-2.5-sunburst`.
+Applies to `gpt-image-2` and `gpt-image-2.6-flare` / `gpt-image-2.6-sunburst`.
 
 The script runs these checks before every request:
 
@@ -78,6 +78,6 @@ The script runs these checks before every request:
 - Aspect ratio must be `<= 3:1`.
 - Total pixels must be in `655360..8294400`.
 - Transparent background requires `png` or `webp`.
-- `quality` `xhigh` and `max` require a `gpt-image-2.5*` model.
+- `quality` `xhigh` and `max` require a `gpt-image-2.5* or gpt-image-2.6*` model.
 - `output_compression` must stay in `0..100` and only applies to `jpeg` or `webp`.
 - `partial_images` must be in `0..3` and requires `stream=true`.

@@ -6,12 +6,12 @@ Environment variables consumed by `scripts/gpt_image.py`:
 | --- | --- | --- | --- |
 | `OPENAI_API_KEY` | yes | none | API key for the OpenAI-compatible endpoint |
 | `OPENAI_BASE_URL` | no | `https://api.openai.com/v1` | Base URL, must include `/v1` |
-| `OPENAI_IMAGE_MODEL` | no | `gpt-image-2` | Default model for `generations` and `edits`; also `gpt-image-2.5-flare`, `gpt-image-2.5-sunburst` |
+| `OPENAI_IMAGE_MODEL` | no | `gpt-image-2` | Default model for `generations` and `edits`; also `gpt-image-2.6-flare`, `gpt-image-2.6-sunburst` |
 | `OPENAI_RESPONSES_MODEL` | no | `gpt-5.4` | Default top-level model for `responses` |
 | `OPENAI_IMAGE_TOOL_MODEL` | no | unset | Optional hosted image model override for the `responses` image tool |
 | `OPENAI_IMAGE_TIMEOUT` | no | `300` | HTTP timeout in seconds |
 | `OPENAI_IMAGE_SIZE` | no | `auto` | e.g. `1024x1024`, `1536x1024`, `auto` |
-| `OPENAI_IMAGE_QUALITY` | no | `high` | `auto`, `low`, `medium`, `high`; `xhigh`, `max` on `gpt-image-2.5*` |
+| `OPENAI_IMAGE_QUALITY` | no | `high` | `auto`, `low`, `medium`, `high`; `xhigh`, `max` on `gpt-image-2.5* or gpt-image-2.6*` |
 | `OPENAI_IMAGE_BACKGROUND` | no | unset | `auto`, `opaque`, or `transparent` (png/webp) |
 | `OPENAI_IMAGE_FORMAT` | no | `webp` | `png`, `jpeg`, `webp` |
 | `OPENAI_IMAGE_COMPRESSION` | no | unset | `0..100`, only for `jpeg` or `webp` |

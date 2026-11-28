@@ -1,6 +1,6 @@
 ---
 name: gpt-image
-description: Full OpenAI-compatible GPT Image coverage (gpt-image-2, gpt-image-2.5-flare, gpt-image-2.5-sunburst) across images/generations, images/edits, and responses with the image_generation tool. Use when the one-shot image helper is not enough - text-to-image, mask edits, multi-image batches, streaming, partial_images, and mixed text+image Responses flows. Reads .env and respects process environment variables; works with any OpenAI-compatible gateway.
+description: Full OpenAI-compatible GPT Image coverage (gpt-image-2, gpt-image-2.6-flare, gpt-image-2.6-sunburst) across images/generations, images/edits, and responses with the image_generation tool, plus an art-direction guide for concept art, cinematic and photographic looks that escape the default poster style. Use when the one-shot image helper is not enough - text-to-image, mask edits, multi-image batches, style exploration, streaming, partial_images, and mixed text+image Responses flows. Reads .env and respects process environment variables; works with any OpenAI-compatible gateway.
 ---
 
 # GPT Image
@@ -10,10 +10,11 @@ A single Python entrypoint that covers every GPT Image 2 route, with strict pre-
 ## Workflow
 
 1. Open [references/prompting.md](./references/prompting.md) to pick a model and write the prompt.
+   For concept art, illustration, cinematic or photographic images (anything where the look matters more than legible text), also read [references/art-direction.md](./references/art-direction.md): why the default output looks like a stock poster, and which prompt choices fix composition, light, detail, scale and people.
 2. Open [references/config.md](./references/config.md) to pick environment variables and defaults.
 3. Open [references/api-surface.md](./references/api-surface.md) to choose between `generations`, `edits`, and `responses`.
 4. Prefer `OPENAI_BASE_URL=https://api.openai.com/v1` unless the user asks for a different OpenAI-compatible endpoint.
-5. Use `gpt-image-2`, `gpt-image-2.5-flare` (fast), or `gpt-image-2.5-sunburst` (highest quality) for `generations` and `edits`; use a text-capable Responses model such as `gpt-5.4` for `responses`.
+5. Use `gpt-image-2`, `gpt-image-2.6-flare` (fast), or `gpt-image-2.6-sunburst` (highest quality) for `generations` and `edits`; use a text-capable Responses model such as `gpt-5.4` for `responses`.
 6. Run `scripts/gpt_image.py` with one of the three subcommands.
 7. Add `--dry-run` first when the payload shape is the main risk.
 8. Add `--save-response <path>` when the raw JSON body or SSE event stream needs to be kept for debugging.
@@ -99,7 +100,7 @@ python3 ~/.claude/skills/gpt-image/scripts/gpt_image.py generations \
 - `responses` uses a top-level Responses model separate from the image model; default it to `gpt-5.4` unless you need another text-capable model.
 - `quality` on Responses tool flows is passed through, but final behavior still depends on the hosted image tool.
 - On OpenAI GPT image models, omit `response_format`; image data already comes back as base64.
-- Fail fast on unsupported `gpt-image-2*` combinations: transparent background without png/webp, `xhigh`/`max` quality on non-2.5 models, invalid size, `partial_images` outside `0..3`, or `stream=true` with `n>1` on public Images routes.
+- Fail fast on unsupported `gpt-image-2*` combinations: transparent background without png/webp, `xhigh`/`max` quality on models older than 2.5, invalid size, `partial_images` outside `0..3`, or `stream=true` with `n>1` on public Images routes.
 
 ## Resources
 
